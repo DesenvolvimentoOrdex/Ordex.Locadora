@@ -2,7 +2,7 @@
 {
     public class VeiculoImagem
     {
-        public int Placa { get; private set; }
+        public string Placa { get; private set; }
         public Guid Id { get; private set; }
         public string Imagem { get; private set; }
         public int Descricao { get; private set; }

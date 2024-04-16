@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Ordex.Locadora.Domain.Alugueis.Vistorias;
+using Ordex.Locadora.Domain.Vistorias;
 
 public class VistoriaMap : IEntityTypeConfiguration<Vistoria>
 {

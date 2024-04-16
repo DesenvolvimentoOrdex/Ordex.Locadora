@@ -7,17 +7,6 @@ namespace Ordex.Locadora.Domain.Alugueis
 {
     public class Aluguel:Entity
     {
-        protected Aluguel(int codigoCliente, int codigoFuncionario, int codigoVeiculo, double valor, bool totalComDesconto, int percentualDesconto, bool status)
-        {
-            CodigoCliente = codigoCliente;
-            CodigoFuncionario = codigoFuncionario;
-            CodigoVeiculo = codigoVeiculo;
-            Valor = valor;
-            TotalComDesconto = totalComDesconto;
-            PercentualDesconto = percentualDesconto;
-            Status = status;
-        }
-
         public int CodigoCliente { get; private set; }
         public int CodigoFuncionario { get; private set; }
         public int CodigoVeiculo { get; private set; }
@@ -30,6 +19,15 @@ namespace Ordex.Locadora.Domain.Alugueis
         public Funcionario Funcionario { get; set; }
         public Veiculo Veiculo { get; set; }
 
-
+        protected Aluguel(int codigoCliente, int codigoFuncionario, int codigoVeiculo, double valor, bool totalComDesconto, int percentualDesconto, bool status)
+        {
+            CodigoCliente = codigoCliente;
+            CodigoFuncionario = codigoFuncionario;
+            CodigoVeiculo = codigoVeiculo;
+            Valor = valor;
+            TotalComDesconto = totalComDesconto;
+            PercentualDesconto = percentualDesconto;
+            Status = status;
+        }
     }
 }

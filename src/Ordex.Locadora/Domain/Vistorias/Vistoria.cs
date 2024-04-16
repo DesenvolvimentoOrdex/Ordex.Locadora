@@ -1,7 +1,8 @@
-﻿using Ordex.Locadora.Domain.Cadastros.Funcionarios;
+﻿using Ordex.Locadora.Domain.Alugueis;
+using Ordex.Locadora.Domain.Cadastros.Funcionarios;
 using Ordex.Locadora.Shared.Roots;
 
-namespace Ordex.Locadora.Domain.Alugueis.Vistorias
+namespace Ordex.Locadora.Domain.Vistorias
 {
     public class Vistoria : Entity
     {
@@ -10,7 +11,7 @@ namespace Ordex.Locadora.Domain.Alugueis.Vistorias
         public int CodigoFuncionario { get; private set; }
         public DateTime DataRetirada { get; private set; }
         public DateTime DataEntrega { get; private set; }
-        public Double TaxaSinistro { get; private set; }
+        public double TaxaSinistro { get; private set; }
         public bool PneuDianteiroEsquedo { get; private set; }
         public bool PneuDianteiroDireito { get; private set; }
         public bool PneuTraseiroEsquedo { get; private set; }

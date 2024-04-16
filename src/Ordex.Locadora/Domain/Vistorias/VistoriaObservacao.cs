@@ -1,8 +1,9 @@
-﻿using Ordex.Locadora.Shared.Roots;
+﻿using Ordex.Locadora.Domain.Alugueis;
+using Ordex.Locadora.Shared.Roots;
 
-namespace Ordex.Locadora.Domain.Alugueis.Vistorias
+namespace Ordex.Locadora.Domain.Vistorias
 {
-    public class VistoriaObservacao:Entity
+    public class VistoriaObservacao : Entity
     {
         public int CodigoAluguel { get; set; }
         public int CodigoVistoria { get; set; }

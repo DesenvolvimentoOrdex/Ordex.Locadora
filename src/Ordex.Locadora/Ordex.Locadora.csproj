@@ -7,12 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Frotas\" />
+    <Folder Include="Domain\Alugueis\Commands\" />
+    <Folder Include="Domain\Alugueis\Handdlers\" />
+    <Folder Include="Domain\Cadastros\Clientes\Handllers\" />
     <Folder Include="Infraesctuture\Data\Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.41.0" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.3" />
