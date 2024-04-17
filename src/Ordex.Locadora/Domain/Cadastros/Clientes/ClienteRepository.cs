@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CSharpFunctionalExtensions;
+using Microsoft.EntityFrameworkCore;
 using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.Locadora.Domain.Cadastros.Clientes
 {
-    public class ClienteRepository : IRepository<Cliente>
+    public class ClienteRepository : IClienteRepository
     {
         private readonly DbContext _dbContext;
         private readonly DbSet<Cliente> _cliente;
@@ -24,8 +25,9 @@ namespace Ordex.Locadora.Domain.Cadastros.Clientes
             _cliente.Update(entity);
             await _dbContext.SaveChangesAsync();
         }
+        public async Task<Maybe<Cliente>> ObterPorEmail(string email) => await _cliente.Where(c => c.Usuario.Email == email).FirstAsync();
 
-        public async Task<Cliente> ObterPorId(int id) => await _cliente.FirstAsync(c => c.Codigo == id);
+        public async Task<Maybe<Cliente>> ObterPorId(int id) => await _cliente.FirstAsync(c => c.Codigo == id);
 
         public async Task<List<Cliente>> ObterTodos() => await _cliente.ToListAsync();
     }

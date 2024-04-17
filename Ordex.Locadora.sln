@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordex.Locadora", "src\Ordex.Locadora\Ordex.Locadora.csproj", "{82195898-93A8-4E0E-83A7-FA112A10B064}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordex.LocadoraApi", "src\Ordex.LocadoraApi\Ordex.LocadoraApi.csproj", "{B8A132C3-E2DA-46CF-8A2D-26F4C14D8015}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordex.LocadoraApi", "src\Ordex.LocadoraApi\Ordex.LocadoraApi.csproj", "{B8A132C3-E2DA-46CF-8A2D-26F4C14D8015}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

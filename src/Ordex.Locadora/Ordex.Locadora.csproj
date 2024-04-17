@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Domain\Alugueis\Commands\" />
     <Folder Include="Domain\Alugueis\Handdlers\" />
-    <Folder Include="Domain\Cadastros\Clientes\Handllers\" />
     <Folder Include="Infraesctuture\Data\Migrations\" />
   </ItemGroup>
 
