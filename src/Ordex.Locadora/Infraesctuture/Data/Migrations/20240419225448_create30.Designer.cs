@@ -12,8 +12,8 @@ using Ordex.Locadora.Infraesctuture.Data;
 namespace Ordex.Locadora.Infraesctuture.Data.Migrations
 {
     [DbContext(typeof(LocadoraDbContext))]
-    [Migration("20240415233159_create")]
-    partial class create
+    [Migration("20240419225448_create30")]
+    partial class create30
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,165 +75,6 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                     b.ToTable("Alugueis");
                 });
 
-            modelBuilder.Entity("Ordex.Locadora.Domain.Alugueis.Vistorias.Vistoria", b =>
-                {
-                    b.Property<int>("Codigo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Codigo"));
-
-                    b.Property<int>("AluguelCodigo")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Amassado")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Chave")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("CodigoAluguel")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CodigoFuncionario")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DataEntrega")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DataRetirada")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Extintor")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Farol")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("FuncionarioCodigo")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("LuzDeFreio")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("MacacoHidraulico")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("PneuDianteiroDireito")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("PneuDianteiroEsquedo")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("PneuStep")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("PneuTraseiroDireito")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("PneuTraseiroEsquedo")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Quebrado")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Riscado")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SetaDianteiraDireita")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SetaDianteiraEsquerda")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SetaTraseiraDireita")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SetaTraseiraEsquerda")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("SinistroEntrega")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("TaxaSinistro")
-                        .HasColumnType("float");
-
-                    b.Property<bool>("Triangulo")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Codigo");
-
-                    b.HasIndex("AluguelCodigo");
-
-                    b.HasIndex("FuncionarioCodigo");
-
-                    b.ToTable("Vistorias");
-                });
-
-            modelBuilder.Entity("Ordex.Locadora.Domain.Alugueis.Vistorias.VistoriaImagem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CodigoVistoria")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Imagem")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VistoriaCodigo")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VistoriaCodigo");
-
-                    b.ToTable("VistoriaImagens");
-                });
-
-            modelBuilder.Entity("Ordex.Locadora.Domain.Alugueis.Vistorias.VistoriaObservacao", b =>
-                {
-                    b.Property<int>("Codigo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Codigo"));
-
-                    b.Property<int>("AluguelCodigo")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CodigoAluguel")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CodigoVistoria")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CodigoVistoriaImagem")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ImagensId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Observacao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VistoriaCodigo")
-                        .HasColumnType("int");
-
-                    b.HasKey("Codigo");
-
-                    b.HasIndex("AluguelCodigo");
-
-                    b.HasIndex("ImagensId");
-
-                    b.HasIndex("VistoriaCodigo");
-
-                    b.ToTable("VistoriaObservacoes");
-                });
-
             modelBuilder.Entity("Ordex.Locadora.Domain.Cadastros.Clientes.Cliente", b =>
                 {
                     b.Property<int>("Codigo")
@@ -267,6 +108,7 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UsuarioId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Codigo");
@@ -325,8 +167,9 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Placa")
-                        .HasColumnType("int");
+                    b.Property<string>("Placa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VeiculoPlaca")
                         .IsRequired()
@@ -379,6 +222,7 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UsuarioId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Codigo");
@@ -608,6 +452,165 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Ordex.Locadora.Domain.Vistorias.Vistoria", b =>
+                {
+                    b.Property<int>("Codigo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Codigo"));
+
+                    b.Property<int>("AluguelCodigo")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Amassado")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Chave")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("CodigoAluguel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CodigoFuncionario")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DataEntrega")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataRetirada")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Extintor")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Farol")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("FuncionarioCodigo")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("LuzDeFreio")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MacacoHidraulico")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PneuDianteiroDireito")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PneuDianteiroEsquedo")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PneuStep")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PneuTraseiroDireito")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PneuTraseiroEsquedo")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Quebrado")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Riscado")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SetaDianteiraDireita")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SetaDianteiraEsquerda")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SetaTraseiraDireita")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SetaTraseiraEsquerda")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SinistroEntrega")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("TaxaSinistro")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("Triangulo")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Codigo");
+
+                    b.HasIndex("AluguelCodigo");
+
+                    b.HasIndex("FuncionarioCodigo");
+
+                    b.ToTable("Vistorias");
+                });
+
+            modelBuilder.Entity("Ordex.Locadora.Domain.Vistorias.VistoriaImagem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CodigoVistoria")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Imagem")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VistoriaCodigo")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VistoriaCodigo");
+
+                    b.ToTable("VistoriaImagens");
+                });
+
+            modelBuilder.Entity("Ordex.Locadora.Domain.Vistorias.VistoriaObservacao", b =>
+                {
+                    b.Property<int>("Codigo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Codigo"));
+
+                    b.Property<int>("AluguelCodigo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CodigoAluguel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CodigoVistoria")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CodigoVistoriaImagem")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ImagensId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Observacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VistoriaCodigo")
+                        .HasColumnType("int");
+
+                    b.HasKey("Codigo");
+
+                    b.HasIndex("AluguelCodigo");
+
+                    b.HasIndex("ImagensId");
+
+                    b.HasIndex("VistoriaCodigo");
+
+                    b.ToTable("VistoriaObservacoes");
+                });
+
             modelBuilder.Entity("Ordex.Locadora.Domain.Alugueis.Aluguel", b =>
                 {
                     b.HasOne("Ordex.Locadora.Domain.Cadastros.Clientes.Cliente", "Cliente")
@@ -635,68 +638,13 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                     b.Navigation("Veiculo");
                 });
 
-            modelBuilder.Entity("Ordex.Locadora.Domain.Alugueis.Vistorias.Vistoria", b =>
-                {
-                    b.HasOne("Ordex.Locadora.Domain.Alugueis.Aluguel", "Aluguel")
-                        .WithMany()
-                        .HasForeignKey("AluguelCodigo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ordex.Locadora.Domain.Cadastros.Funcionarios.Funcionario", "Funcionario")
-                        .WithMany()
-                        .HasForeignKey("FuncionarioCodigo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Aluguel");
-
-                    b.Navigation("Funcionario");
-                });
-
-            modelBuilder.Entity("Ordex.Locadora.Domain.Alugueis.Vistorias.VistoriaImagem", b =>
-                {
-                    b.HasOne("Ordex.Locadora.Domain.Alugueis.Vistorias.Vistoria", "Vistoria")
-                        .WithMany()
-                        .HasForeignKey("VistoriaCodigo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Vistoria");
-                });
-
-            modelBuilder.Entity("Ordex.Locadora.Domain.Alugueis.Vistorias.VistoriaObservacao", b =>
-                {
-                    b.HasOne("Ordex.Locadora.Domain.Alugueis.Aluguel", "Aluguel")
-                        .WithMany()
-                        .HasForeignKey("AluguelCodigo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ordex.Locadora.Domain.Alugueis.Vistorias.VistoriaImagem", "Imagens")
-                        .WithMany()
-                        .HasForeignKey("ImagensId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ordex.Locadora.Domain.Alugueis.Vistorias.Vistoria", "Vistoria")
-                        .WithMany()
-                        .HasForeignKey("VistoriaCodigo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Aluguel");
-
-                    b.Navigation("Imagens");
-
-                    b.Navigation("Vistoria");
-                });
-
             modelBuilder.Entity("Ordex.Locadora.Domain.Cadastros.Clientes.Cliente", b =>
                 {
                     b.HasOne("Ordex.Locadora.Domain.Logon.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Usuario");
                 });
@@ -716,7 +664,9 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                 {
                     b.HasOne("Ordex.Locadora.Domain.Logon.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Usuario");
                 });
@@ -800,6 +750,63 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Ordex.Locadora.Domain.Vistorias.Vistoria", b =>
+                {
+                    b.HasOne("Ordex.Locadora.Domain.Alugueis.Aluguel", "Aluguel")
+                        .WithMany()
+                        .HasForeignKey("AluguelCodigo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ordex.Locadora.Domain.Cadastros.Funcionarios.Funcionario", "Funcionario")
+                        .WithMany()
+                        .HasForeignKey("FuncionarioCodigo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Aluguel");
+
+                    b.Navigation("Funcionario");
+                });
+
+            modelBuilder.Entity("Ordex.Locadora.Domain.Vistorias.VistoriaImagem", b =>
+                {
+                    b.HasOne("Ordex.Locadora.Domain.Vistorias.Vistoria", "Vistoria")
+                        .WithMany()
+                        .HasForeignKey("VistoriaCodigo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vistoria");
+                });
+
+            modelBuilder.Entity("Ordex.Locadora.Domain.Vistorias.VistoriaObservacao", b =>
+                {
+                    b.HasOne("Ordex.Locadora.Domain.Alugueis.Aluguel", "Aluguel")
+                        .WithMany()
+                        .HasForeignKey("AluguelCodigo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ordex.Locadora.Domain.Vistorias.VistoriaImagem", "Imagens")
+                        .WithMany()
+                        .HasForeignKey("ImagensId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ordex.Locadora.Domain.Vistorias.Vistoria", "Vistoria")
+                        .WithMany()
+                        .HasForeignKey("VistoriaCodigo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Aluguel");
+
+                    b.Navigation("Imagens");
+
+                    b.Navigation("Vistoria");
                 });
 
             modelBuilder.Entity("Ordex.Locadora.Domain.Cadastros.Frotas.Veiculo", b =>

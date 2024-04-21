@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Ordex.Locadora.Domain.Vistorias;
-using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.Locadora.Domain.Vistorias.Repository
 {
-    public class VistoriaImagemRepository : IRepository<VistoriaImagem>
+    public class VistoriaImagemRepository
     {
         private readonly DbContext _dbContext;
         private readonly DbSet<VistoriaImagem> _vistoria;

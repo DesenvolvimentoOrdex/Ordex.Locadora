@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ordex.Locadora.Infraesctuture.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class create : Migration
+    public partial class create30 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -87,7 +87,7 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,13 +109,13 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUserClaims_AspNetUsers_UsuarioId1",
                         column: x => x.UsuarioId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,13 +136,13 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUserLogins_AspNetUsers_UsuarioId1",
                         column: x => x.UsuarioId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -160,13 +160,13 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,13 +187,13 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UsuarioId1",
                         column: x => x.UsuarioId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -202,14 +202,14 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                 {
                     Codigo = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CpfCnpj = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TipoPessoa = table.Column<int>(type: "int", nullable: false),
                     EnderecoCep = table.Column<int>(type: "int", nullable: false),
                     NomeRazao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataFiliacao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ativo = table.Column<bool>(type: "bit", nullable: false),
-                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Ativo = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,7 +218,8 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         name: "FK_Clientes_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -229,14 +230,14 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Funcao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataContratacao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CpfCnpj = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TipoPessoa = table.Column<int>(type: "int", nullable: false),
                     EnderecoCep = table.Column<int>(type: "int", nullable: false),
                     NomeRazao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataFiliacao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ativo = table.Column<bool>(type: "bit", nullable: false),
-                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Ativo = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -245,7 +246,8 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         name: "FK_Funcionarios_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,7 +255,7 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Placa = table.Column<int>(type: "int", nullable: false),
+                    Placa = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Imagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descricao = table.Column<int>(type: "int", nullable: false),
                     VeiculoPlaca = table.Column<string>(type: "nvarchar(450)", nullable: false)
@@ -266,7 +268,7 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         column: x => x.VeiculoPlaca,
                         principalTable: "Veiculos",
                         principalColumn: "Placa",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -294,19 +296,19 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         column: x => x.ClienteCodigo,
                         principalTable: "Clientes",
                         principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Alugueis_Funcionarios_FuncionarioCodigo",
                         column: x => x.FuncionarioCodigo,
                         principalTable: "Funcionarios",
                         principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Alugueis_Veiculos_VeiculoPlaca",
                         column: x => x.VeiculoPlaca,
                         principalTable: "Veiculos",
                         principalColumn: "Placa",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -350,13 +352,13 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         column: x => x.AluguelCodigo,
                         principalTable: "Alugueis",
                         principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Vistorias_Funcionarios_FuncionarioCodigo",
                         column: x => x.FuncionarioCodigo,
                         principalTable: "Funcionarios",
                         principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -376,7 +378,7 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         column: x => x.VistoriaCodigo,
                         principalTable: "Vistorias",
                         principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -401,19 +403,19 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         column: x => x.AluguelCodigo,
                         principalTable: "Alugueis",
                         principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_VistoriaObservacoes_VistoriaImagens_ImagensId",
                         column: x => x.ImagensId,
                         principalTable: "VistoriaImagens",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_VistoriaObservacoes_Vistorias_VistoriaCodigo",
                         column: x => x.VistoriaCodigo,
                         principalTable: "Vistorias",
                         principalColumn: "Codigo",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

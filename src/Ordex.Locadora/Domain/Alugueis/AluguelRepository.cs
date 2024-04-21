@@ -3,7 +3,7 @@ using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.Locadora.Domain.Alugueis
 {
-    public class AluguelRepository : IRepository<Aluguel>
+    public class AluguelRepository
     {
         private readonly DbContext _dbContext;
         private readonly DbSet<Aluguel> _aluguel;

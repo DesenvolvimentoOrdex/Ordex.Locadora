@@ -4,7 +4,7 @@ using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.Locadora.Domain.Vistorias.Repository
 {
-    public class VistoriaObservacaoRepository : IRepository<VistoriaObservacao>
+    public class VistoriaObservacaoRepository
     {
         private readonly DbContext _dbContext;
         private readonly DbSet<VistoriaObservacao> _vistoria;

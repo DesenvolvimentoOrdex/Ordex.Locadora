@@ -1,34 +1,35 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
+using Ordex.Locadora.Domain.Logon;
+using Ordex.Locadora.Infraesctuture.Data;
 using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.Locadora.Domain.Cadastros.Clientes
 {
     public class ClienteRepository : IClienteRepository
     {
-        private readonly DbContext _dbContext;
-        private readonly DbSet<Cliente> _cliente;
+        private readonly LocadoraDbContext _context;
 
-        public ClienteRepository(DbContext dbContext)
+        public ClienteRepository(LocadoraDbContext context)
         {
-            _dbContext = dbContext;
-            _cliente = dbContext.Set<Cliente>();
+            _context = context;
         }
+
         public async Task Adicionar(Cliente entity)
         {
-            await _cliente.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
+            await _context.Clientes.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task Atualizar(Cliente entity)
         {
-            _cliente.Update(entity);
-            await _dbContext.SaveChangesAsync();
+            _context.Clientes.Update(entity);
+            await _context.SaveChangesAsync();
         }
-        public async Task<Maybe<Cliente>> ObterPorEmail(string email) => await _cliente.Where(c => c.Usuario.Email == email).FirstAsync();
+        public async Task<Maybe<Cliente>> ObterPorUsuarioId(string id)=>await _context.Clientes.FirstOrDefaultAsync(c => c.UsuarioId == id);
+      
+        public async Task<Maybe<Cliente>> ObterPorId(int id) => await _context.Clientes.FirstOrDefaultAsync(c => c.Codigo == id);
 
-        public async Task<Maybe<Cliente>> ObterPorId(int id) => await _cliente.FirstAsync(c => c.Codigo == id);
-
-        public async Task<List<Cliente>> ObterTodos() => await _cliente.ToListAsync();
+        public async Task<List<Cliente>> ObterTodos() => await _context.Clientes.ToListAsync();
     }
 }

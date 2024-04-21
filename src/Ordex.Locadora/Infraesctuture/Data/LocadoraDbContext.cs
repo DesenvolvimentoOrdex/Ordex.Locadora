@@ -9,13 +9,11 @@ using Ordex.Locadora.Domain.Vistorias;
 
 namespace Ordex.Locadora.Infraesctuture.Data;
 
-public sealed class LocadoraDbContext : IdentityDbContext<
+public sealed class LocadoraDbContext(DbContextOptions<LocadoraDbContext> options) : IdentityDbContext<
     Usuario, Role, string,
     UsuarioClaim, UsuarioRole, UsuarioLogin,
-    RoleClaim, UsuarioToken>
+    RoleClaim, UsuarioToken>(options)
 {
-    public LocadoraDbContext(DbContextOptions<LocadoraDbContext> options) : base(options) { }
-
     public DbSet<Aluguel> Alugueis { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Funcionario> Funcionarios { get; set; }

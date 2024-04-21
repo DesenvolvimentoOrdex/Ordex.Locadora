@@ -4,7 +4,7 @@ using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.Locadora.Domain.Cadastros.Veiculos
 {
-    public class VeiculoImagemRepository : IRepository<VeiculoImagem>
+    public class VeiculoImagemRepository
     {
         private readonly DbContext _dbContext;
         private readonly DbSet<VeiculoImagem> _veiculo;
