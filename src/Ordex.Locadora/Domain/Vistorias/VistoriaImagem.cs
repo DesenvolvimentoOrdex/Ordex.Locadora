@@ -1,4 +1,4 @@
-﻿namespace Ordex.Locadora.Domain.Alugueis.Vistorias
+﻿namespace Ordex.Locadora.Domain.Vistorias
 {
     public class VistoriaImagem
     {

@@ -1,5 +1,7 @@
-﻿using Ordex.Locadora.Domain.Logon;
+﻿using CSharpFunctionalExtensions;
+using Ordex.Locadora.Domain.Cadastros.Clientes;
 using Ordex.Locadora.Shared.Roots.Pessoas;
+using Ordex.Locadora.Shared.Validations;
 
 namespace Ordex.Locadora.Domain.Cadastros.Funcionarios;
 
@@ -8,8 +10,8 @@ public class Funcionario : Pessoa
     public string Funcao { get; private set; }
     public DateTime DataContratacao { get; private set; }
 
-    private Funcionario(string cpfCnpj, EnumTipoPessoa tipoPessoa, int enderecoCep, string nomeRazao, DateTime dataFiliacao, string telefone, bool ativo)
-                    : base(cpfCnpj, tipoPessoa, enderecoCep, nomeRazao, dataFiliacao, telefone, ativo)
+    private Funcionario(string cpfCnpj, EnumTipoPessoa tipoPessoa, int enderecoCep, string nomeRazao, DateTime dataFiliacao, string telefone, bool ativo, string usuarioId)
+                    : base(cpfCnpj, tipoPessoa, enderecoCep, nomeRazao, dataFiliacao, telefone, ativo, usuarioId)
     {
 
         CpfCnpj = cpfCnpj;
@@ -19,5 +21,35 @@ public class Funcionario : Pessoa
         DataFiliacao = dataFiliacao;
         Telefone = telefone;
         Ativo = ativo;
+        UsuarioId = usuarioId;
     }
+
+    public void AtivarInativar(bool status)
+    {
+        Ativo = status;
+    }
+
+    public static Result<Funcionario> Novo(string cpfCnpj, string nomeRazao, DateTime dataFiliacao, string telefone, bool ativo, string usuarioId)
+    {
+        Result<bool, string> documentoValido;
+        EnumTipoPessoa enumTipoPessoa;
+        if (cpfCnpj.Length <= 11)
+        {
+            documentoValido = DocumentoValidation.CpfValidate(cpfCnpj);
+            enumTipoPessoa = EnumTipoPessoa.Fisica;
+        }
+        else
+        {
+            documentoValido = DocumentoValidation.CnpjValidate(cpfCnpj);
+            enumTipoPessoa = EnumTipoPessoa.Juridica;
+        }
+
+        if (documentoValido.IsFailure)
+        {
+            return Result.Failure<Funcionario>(documentoValido.Error);
+        }
+
+        return new Funcionario(cpfCnpj, enumTipoPessoa, 10, nomeRazao, dataFiliacao, telefone, true, usuarioId);
+    }
+
 }
