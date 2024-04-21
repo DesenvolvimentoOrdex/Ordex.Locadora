@@ -1,10 +1,13 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using EmailService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using Ordex.Locadora.Domain.Cadastros.Clientes;
 using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Infraesctuture.Data;
+using Ordex.Locadora.Service.EmailService;
+using Ordex.Locadora.Shared.Interfaces;
 using Ordex.LocadoraApi.Configurations;
 using Ordex.LocadoraApi.Infraesctruture;
 
@@ -26,7 +29,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new MediatorModule()));
 builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new ApplicationModule()));
 
-DbConfiguration.ConexaoBanco(builder.Services, builder.Configuration);
+//DbConfiguration.ConexaoBanco(builder.Services, builder.Configuration);
 
 builder.Services.AddAuthorization();
 
@@ -38,6 +41,21 @@ builder.Services.AddAuthorizationBuilder();
 builder.Services.AddIdentityCore<Usuario>()
                 .AddEntityFrameworkStores<LocadoraDbContext>()
                 .AddApiEndpoints();
+
+builder.Services.AddCors(option =>
+{
+    option.AddPolicy("CorsPolice", builder => builder
+    .AllowAnyOrigin()
+    .AllowAnyHeader()
+    .AllowAnyMethod());
+});
+
+var emailConfig = builder.Configuration
+                .GetSection("EmailConfiguration")
+                .Get<EmailConfiguration>();
+builder.Services.AddSingleton(emailConfig);
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddTransient<IClienteRepository, ClienteRepository>();
 
 var app = builder.Build();
 
@@ -52,5 +70,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("CorsPolice");
 
 app.Run();

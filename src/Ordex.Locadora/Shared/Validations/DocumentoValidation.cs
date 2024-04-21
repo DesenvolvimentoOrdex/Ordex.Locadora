@@ -31,8 +31,12 @@ namespace Ordex.Locadora.Shared.Validations
             int digit2 = remainder < 2 ? 0 : 11 - remainder;
 
             
-             bool result = numbers[9] == digit1 && numbers[10] == digit2;
-            return result == true ? result: Result.Failure<bool, string>("Cpf Inválido");
+             bool resultTrue = numbers[9] == digit1 && numbers[10] == digit2;
+            if (resultTrue)
+            {
+                return resultTrue;
+            }
+            return Result.Failure<bool, string>("Cpf Inválido");
         }
 
         public static Result<bool, string> CnpjValidate(string cnpj)
@@ -69,9 +73,13 @@ namespace Ordex.Locadora.Shared.Validations
             remainder = sum % 11;
             int digit2 = remainder < 2 ? 0 : 11 - remainder;
 
-            bool result = numbers[12] == digit1 && numbers[13] == digit2;
+            bool resultTrue = numbers[12] == digit1 && numbers[13] == digit2;
 
-            return result == true ? result : Result.Failure<bool, string>("Cnpj Inválido");
+            if (resultTrue)
+            {
+                return resultTrue;
+            }
+            return Result.Failure<bool, string>("Cnpj Inválido");
         }
 
         private static bool IsDigitsOnly(string str)

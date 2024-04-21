@@ -1,37 +1,38 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.IdentityModel.Tokens;
+using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Shared;
 
 namespace Ordex.Locadora.Domain.Cadastros.Clientes.Commands
 {
-    public class CriarClienteCommand : IDomainCommand<Result<int>>
+    public sealed class CriarClienteCommand : IDomainCommand<Result<int>>
     {
-        private  CriarClienteCommand(string email, string cpfCnpj, string nomeRazao, DateTime dataFiliacao, string telefone)
+        private  CriarClienteCommand(string cpfCnpj, string nomeRazao, DateTime dataFiliacao, string telefone, Usuario usuario)
         {
-            Email = email;
             CpfCnpj = cpfCnpj;
             NomeRazao = nomeRazao;
             DataFiliacao = dataFiliacao;
             Telefone = telefone;
+            Usuarios = usuario;
         }
-        public string Email { get; private set; }
         public string CpfCnpj { get; private set; }
         public string NomeRazao { get; private set; }
         public DateTime DataFiliacao { get; private set; }
         public string Telefone { get; private set; }
+        public Usuario Usuarios { get; private set; }
 
-        public static Result<CriarClienteCommand> Criar(string email, string cpfCnpj, string nomeRazao, DateTime dataFiliacao, string telefone)
+        public static Result<CriarClienteCommand> Criar(string cpfCnpj, string nomeRazao, DateTime dataFiliacao, string telefone, Usuario usuario)
         {
-            if (email.IsNullOrEmpty())
-                Result.Failure<CriarClienteCommand>("O campo Emial é obrigatório");
             if (cpfCnpj.IsNullOrEmpty())
                 Result.Failure<CriarClienteCommand>("O campo CpfCnpj é obrigatório");
             else if (nomeRazao.IsNullOrEmpty())
                 Result.Failure<CriarClienteCommand>("O campo NomeRazao é obrigatório");
             else if (telefone.IsNullOrEmpty())
                 Result.Failure<CriarClienteCommand>("O campo telefone é obrigatório");
+            else if (usuario.Id.IsNullOrEmpty())
+                Result.Failure<CriarClienteCommand>("O campo UsuarioId é obrigatório");
             return
-                new CriarClienteCommand(email, cpfCnpj, nomeRazao, dataFiliacao, telefone);           
+                new CriarClienteCommand( cpfCnpj, nomeRazao, dataFiliacao, telefone, usuario);           
         }
     }
 }

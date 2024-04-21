@@ -15,14 +15,14 @@ namespace Ordex.LocadoraApi.Configurations
                 {
                     connection.Open();
 
-                    // Verifica se o banco já existe
-                    SqlCommand checkDbCommand = new SqlCommand($"SELECT db_id('{databaseName}')", connection);
+                    //Verifica se o banco já existe
+                        SqlCommand checkDbCommand = new SqlCommand($"SELECT db_id('{databaseName}')", connection);
                     var result = checkDbCommand.ExecuteScalar().ToString();
 
                     if (result == "")
                     {
-                        // Cria o banco de dados
-                        SqlCommand createDbCommand = new SqlCommand($"CREATE DATABASE {databaseName}", connection);
+                    //    Cria o banco de dados
+                       SqlCommand createDbCommand = new SqlCommand($"CREATE DATABASE {databaseName}", connection);
                         createDbCommand.ExecuteNonQuery();
                         Console.WriteLine($"Banco de dados '{databaseName}' criado com sucesso!");
                     }
@@ -33,7 +33,7 @@ namespace Ordex.LocadoraApi.Configurations
 
                     var serviceProvider = service.AddDbContext<LocadoraDbContext>(options =>
                     options.UseSqlServer(config.GetConnectionString("OrdexLocadora"))).BuildServiceProvider();
-               
+
                     using (var context = serviceProvider.GetService<LocadoraDbContext>())
                     {
                         var pendingMigrations = context.Database.GetPendingMigrations();

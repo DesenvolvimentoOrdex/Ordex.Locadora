@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Ordex.LocadoraApi.Controllers
 {
     [ApiController]
+    [Authorize]
     public class BaseController : ControllerBase
     {
         protected IActionResult Success(object data)

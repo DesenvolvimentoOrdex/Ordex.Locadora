@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using Microsoft.IdentityModel.Tokens;
 using Ordex.Locadora.Shared.Roots.Pessoas;
 using Ordex.Locadora.Shared.Validations;
 
@@ -7,8 +6,8 @@ namespace Ordex.Locadora.Domain.Cadastros.Clientes
 {
     public class Cliente : Pessoa
     {
-        private Cliente(string cpfCnpj, EnumTipoPessoa tipoPessoa, int enderecoCep, string nomeRazao, DateTime dataFiliacao, string telefone, bool ativo)
-                        : base(cpfCnpj, tipoPessoa, enderecoCep, nomeRazao, dataFiliacao, telefone, ativo)
+        private Cliente(string cpfCnpj, EnumTipoPessoa tipoPessoa, int enderecoCep, string nomeRazao, DateTime dataFiliacao, string telefone, bool ativo, string usuarioId)
+                        : base(cpfCnpj, tipoPessoa, enderecoCep, nomeRazao, dataFiliacao, telefone, ativo, usuarioId)
         {
             CpfCnpj = cpfCnpj;
             TipoPessoa = tipoPessoa;
@@ -17,26 +16,34 @@ namespace Ordex.Locadora.Domain.Cadastros.Clientes
             DataFiliacao = dataFiliacao;
             Telefone = telefone;
             Ativo = ativo;
+            UsuarioId = usuarioId;
         }
 
-        public bool AtivarInativar(bool statusCliente)
+        public void AtivarInativar(bool statusCliente)
         {
-            if (statusCliente)
-                statusCliente = false;
-            else
-                statusCliente = true;
-
-            return statusCliente;
+           Ativo = statusCliente;
         }
-        public static Result<Cliente> Novo(string cpfCnpj, EnumTipoPessoa tipoPessoa, int enderecoCep, string nomeRazao, DateTime dataFiliacao, string telefone, bool ativo)
+        public static Result<Cliente> Novo(string cpfCnpj, string nomeRazao, DateTime dataFiliacao, string telefone, bool ativo, string usuarioId)
         {
-            var cpfCnpjResult = "";
-            if (tipoPessoa == EnumTipoPessoa.Juridica)
-                cpfCnpjResult = DocumentoValidation.CnpjValidate(cpfCnpj).Error;
+            Result<bool, string> documentoValido;
+            EnumTipoPessoa enumTipoPessoa;
+            if (cpfCnpj.Length <= 11)
+            {
+                documentoValido = DocumentoValidation.CpfValidate(cpfCnpj);
+                enumTipoPessoa = EnumTipoPessoa.Fisica;
+            }
             else
-                cpfCnpjResult = DocumentoValidation.CpfValidate(cpfCnpj).Error;
+            {
+                documentoValido = DocumentoValidation.CnpjValidate(cpfCnpj);
+                enumTipoPessoa = EnumTipoPessoa.Juridica;
+            }
 
-            return !cpfCnpjResult.IsNullOrEmpty() ? new Cliente(cpfCnpj, tipoPessoa, enderecoCep, nomeRazao, dataFiliacao, telefone, true) : Result.Failure<Cliente>(cpfCnpjResult);
+            if (documentoValido.IsFailure)
+            {
+                return Result.Failure<Cliente>(documentoValido.Error);
+            }
+
+            return new Cliente(cpfCnpj, enumTipoPessoa, 10, nomeRazao, dataFiliacao, telefone, true, usuarioId);
         }
     }
 }

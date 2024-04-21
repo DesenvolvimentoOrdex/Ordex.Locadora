@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using MimeKit;
 using Ordex.Locadora.Domain.Logon;
-using System;
+using Ordex.Locadora.Service.EmailService;
+using Ordex.LocadoraApi.InputModels;
 
 namespace Ordex.LocadoraApi.Controllers.Logon;
 
@@ -14,39 +16,26 @@ namespace Ordex.LocadoraApi.Controllers.Logon;
 
 public class LogonController : BaseController
 {
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly UserManager<Usuario> _userManager;
+    private readonly SignInManager<Usuario> _signInManager;
+    private readonly IEmailSender _emailSender;
 
-    public LogonController(IHttpClientFactory httpClientFactory)
+    public LogonController(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, IEmailSender emailSender)
     {
-        _httpClientFactory = httpClientFactory;
+        _userManager = userManager;
+        _signInManager = signInManager;
+        _emailSender = emailSender;
     }
 
-    [HttpPost("Criar")]
-    public async Task<IActionResult> NovoUsuario([FromBody] RegisterRequest registration, [FromServices] IServiceProvider sp)
-    {
-        var userManager = sp.GetRequiredService<UserManager<Usuario>>();
-
-        var user = new Usuario();
-        await userManager.SetUserNameAsync(user, registration.Email);
-        var result = await userManager.CreateAsync(user, registration.Password);
-
-        if (result.Succeeded)
-        {
-            return Ok();
-        }
-
-        return BadRequest(result.Errors.ToDictionary(e => e.Code, e => new[] { e.Description }));
-
-    }
     [HttpPost("Login")]
-    public async Task<Results<UnauthorizedHttpResult, Ok<AccessTokenResponse>, SignInHttpResult>> Login([FromBody] LoginRequest login, [FromServices] IServiceProvider sp)
+    public async Task<Results<UnauthorizedHttpResult, Ok<AccessTokenResponse>, SignInHttpResult>> Login([FromBody] LoginInputModel login, [FromServices] IServiceProvider sp)
     {
         var userManager = sp.GetRequiredService<UserManager<Usuario>>();
         var user = await userManager.FindByNameAsync(login.Email);
 
-        if (user is null || !await userManager.CheckPasswordAsync(user, login.Password))
+        if (user is null || !await userManager.CheckPasswordAsync(user, login.Senha))
             return TypedResults.Unauthorized();
-        
+
         var claimsFactory = sp.GetRequiredService<IUserClaimsPrincipalFactory<Usuario>>();
         var claimsPrincipal = await claimsFactory.CreateAsync(user);
 
@@ -61,7 +50,6 @@ public class LogonController : BaseController
         var identityBearerOptions = optionsMonitor.Get(IdentityConstants.BearerScheme);
         var refreshTokenProtector = identityBearerOptions.RefreshTokenProtector ?? throw new ArgumentException($"{nameof(identityBearerOptions.RefreshTokenProtector)} is null", nameof(optionsMonitor));
         var refreshTicket = refreshTokenProtector.Unprotect(refreshRequest.RefreshToken);
-
         // Reject the /refresh attempt with a 401 if the token expired or the security stamp validation fails
         if (refreshTicket?.Properties?.ExpiresUtc is not { } expiresUtc ||
             timeProvider.GetUtcNow() >= expiresUtc ||
@@ -75,4 +63,39 @@ public class LogonController : BaseController
         return TypedResults.SignIn(newPrincipal, authenticationScheme: IdentityConstants.BearerScheme);
     }
 
+    [HttpPost("RedefinirSenhaToken")]
+    public async Task<IActionResult> RedefinirSenhaToken(RedefinirSenhaTokenInputModel redefinirSenhaInputModel)
+    {
+
+        var user = await _userManager.FindByEmailAsync(redefinirSenhaInputModel.Email);
+        if (user == null)
+            return NotFound("Usuário não encontrado!");
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var ListAEmailAdress = new List<MailboxAddress>();
+
+        ListAEmailAdress.Add(new MailboxAddress(user.Email, user.Email));
+
+        var message = new Message(ListAEmailAdress, "Token de redefinição de senha.", token, null);
+
+        await _emailSender.SendEmailAsync(message);
+
+        return Ok();
+    }
+
+    [HttpPost("RedefinirSenha")]
+    public async Task<IActionResult> ResetPassword(RedinirSenhaInputModel redinirSenhaInputModer)
+    {
+        var user = await _userManager.FindByEmailAsync(redinirSenhaInputModer.Email);
+        if (user == null)
+            return NotFound("Usuário não encontrado!");
+
+        var resetPassResult = await _userManager.ResetPasswordAsync(user, redinirSenhaInputModer.Token, redinirSenhaInputModer.NovaSenha);
+        if (!resetPassResult.Succeeded)
+        {
+            return BadRequest(resetPassResult.Errors);
+        }
+
+        return RedirectToAction(nameof(Login));
+    }
 }
