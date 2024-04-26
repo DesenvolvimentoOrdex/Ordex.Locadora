@@ -3,12 +3,12 @@ using Autofac.Extensions.DependencyInjection;
 using EmailService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Ordex.Locadora.Domain.Cadastros.Clientes;
 using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Infraesctuture.Data;
 using Ordex.Locadora.Service.EmailService;
 using Ordex.Locadora.Shared.Interfaces;
-using Ordex.LocadoraApi.Configurations;
 using Ordex.LocadoraApi.Infraesctruture;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +49,36 @@ builder.Services.AddCors(option =>
     .AllowAnyHeader()
     .AllowAnyMethod());
 });
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Documentation", Version = "v1" });
+
+    // Adiciona a documentação do JWT ao Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer"
+    });
+
+    // Adiciona o esquema de segurança ao Swagger
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] { }
+            }
+        });
+});
+
 
 var emailConfig = builder.Configuration
                 .GetSection("EmailConfiguration")
