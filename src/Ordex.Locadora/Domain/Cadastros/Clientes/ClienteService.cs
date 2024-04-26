@@ -12,7 +12,27 @@ namespace Ordex.Locadora.Domain.Cadastros.Clientes
         {
             _clienteRepo = clienteRepo;
         }
-       
+
+        public async Task<Result<Cliente>> ObterPorCpfCnpj(string cpfCnpj)
+        {
+            var cliente = await _clienteRepo.ObterPorCpfCnpj(cpfCnpj);
+            if (cliente.HasNoValue)
+            {
+                return Result.Failure<Cliente>("Cliente não encontrado.");
+            }
+            return cliente.Value;
+        }
+
+        public async Task<Result<bool>> ExisteCpfCnpj(string cpfCnpj)
+        {
+            var cliente = await _clienteRepo.ObterPorCpfCnpj(cpfCnpj);
+            if (cliente.HasValue)
+            {
+                return Result.Failure<bool>("CpfCnpj em uso.");
+            }
+            return Result.Success<bool>(false);
+        }
+
         public async Task<Result<Cliente>> ObterPorId(int id)
         {
             var cliente = await _clienteRepo.ObterPorId(id);

@@ -29,6 +29,17 @@ public class FuncionarioController : BaseController
         return Ok(response.Value);
 
     }
+    [HttpGet("BuscarPorCpfCnpj")]
+    public async Task<IActionResult> BuscarPorCpfCnpj([FromQuery] CpfCnpjInputModel cpfCnpjInputModel)
+    {
+        var response = await _funcionarioService.ObterPorCpfnpj(cpfCnpjInputModel.CpfCnpj);
+        if (response.IsFailure)
+        {
+            return NotFound(response.Error);
+        }
+        return Ok(response.Value);
+
+    }
     [HttpGet("Listar")]
     public async Task<IActionResult> Listar()
     {

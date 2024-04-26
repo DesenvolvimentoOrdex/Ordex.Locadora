@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Ordex.Locadora.Domain.Cadastros.Clientes;
+using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Shared.Roots.Pessoas;
 using Ordex.Locadora.Shared.Validations;
 
@@ -7,7 +8,7 @@ namespace Ordex.Locadora.Domain.Cadastros.Funcionarios;
 
 public class Funcionario : Pessoa
 {
-    public string Funcao { get; private set; }
+    public string? Funcao { get; private set; }
     public DateTime DataContratacao { get; private set; }
 
     private Funcionario(string cpfCnpj, EnumTipoPessoa tipoPessoa, int enderecoCep, string nomeRazao, DateTime dataFiliacao, string telefone, bool ativo, string usuarioId)
@@ -28,6 +29,18 @@ public class Funcionario : Pessoa
     {
         Ativo = status;
     }
+    public void Contrato(string funcao)
+    {
+        Funcao = funcao;
+        DataContratacao = DateTime.Now;
+    }
+
+    public void CriarUsuario(Usuario usuario)
+    {
+        Usuario = usuario;
+    }
+
+
 
     public static Result<Funcionario> Novo(string cpfCnpj, string nomeRazao, DateTime dataFiliacao, string telefone, bool ativo, string usuarioId)
     {

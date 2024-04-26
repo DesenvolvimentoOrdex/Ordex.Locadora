@@ -25,7 +25,14 @@ namespace Ordex.Locadora.Domain.Cadastros.Clientes.Handllers
             {
                 return Result.Failure<int>(clientex.Value.Codigo.ToString());
             }
-            
+
+            var existeCpfCnpj = await _clienteRepo.ObterPorCpfCnpj(request.CpfCnpj);
+            if (existeCpfCnpj.HasValue)
+            {
+                return Result.Failure<int>($" Cpf ou Cnpj cadastrado para o cliente com o codigo: {existeCpfCnpj.Value.Codigo}, verifique!"
+                );
+            }
+
             var clienteNovo = Cliente.Novo(request.CpfCnpj, request.NomeRazao, request.DataFiliacao, request.Telefone, true, request.Usuarios.Id);
             if (clienteNovo.IsFailure)
             {

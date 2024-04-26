@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Ordex.Locadora.Domain.Cadastros.Clientes;
 using Ordex.Locadora.Domain.Cadastros.Funcionarios;
+using Ordex.Locadora.Domain.Cadastros.Veiculos;
 using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.LocadoraApi.Infraesctruture
@@ -13,6 +14,8 @@ namespace Ordex.LocadoraApi.Infraesctruture
             builder.RegisterType<ClienteService>().As<IClienteService>();
             builder.RegisterType<FuncionarioRepository>().As<IFuncionarioRepository>();
             builder.RegisterType<FuncionarioService>().As<IFuncionarioService>();
+            builder.RegisterType<VeiculoRepository>().As<IVeiculoRepository>();
+            builder.RegisterType<VeiculoService>().As<IVeiculoService>();
         }
     }
 }

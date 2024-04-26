@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using Ordex.Locadora.Domain.Cadastros.Clientes;
 using Ordex.Locadora.Domain.Cadastros.Funcionarios;
 
 namespace Ordex.Locadora.Shared.Interfaces
@@ -9,6 +10,7 @@ namespace Ordex.Locadora.Shared.Interfaces
         Task Atualizar(Funcionario entity);
         Task<List<Funcionario>> ObterTodos();
         Task<Maybe<Funcionario>> ObterPorId(int id);
+        Task<Maybe<Funcionario>> ObterPorCpfCnpj(string cpfCnpj);
         Task<Maybe<Funcionario>> ObterPorUsuarioId(string id);
     }
 }

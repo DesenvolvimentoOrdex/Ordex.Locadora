@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ordex.Locadora.Infraesctuture.Data;
 
@@ -11,9 +12,11 @@ using Ordex.Locadora.Infraesctuture.Data;
 namespace Ordex.Locadora.Infraesctuture.Data.Migrations
 {
     [DbContext(typeof(LocadoraDbContext))]
-    partial class LocadoraDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240426031556_statusVeiculo")]
+    partial class statusVeiculo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

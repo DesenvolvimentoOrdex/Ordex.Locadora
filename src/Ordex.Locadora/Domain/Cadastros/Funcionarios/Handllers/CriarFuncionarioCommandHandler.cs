@@ -21,11 +21,23 @@ public sealed class CriarFuncionarioCommandHandler : IRequestHandler<CriarFuncio
             return Result.Failure<int>(funcionario.Value.Codigo.ToString());
         }
 
+        var existeCpfCnpj = await _funcionarioRepo.ObterPorCpfCnpj(request.CpfCnpj);
+        if (existeCpfCnpj.HasValue)
+        {
+            return Result.Failure<int>($" Cpf ou Cnpj cadastrado para o funcionario com o codigo: {existeCpfCnpj.Value.Codigo}, verifique!"
+            );
+        }
+
         var funcionarioNovo = Funcionario.Novo(request. CpfCnpj, request.NomeRazao, request.DataFiliacao, request.Telefone, true, request.Usuarios.Id);
         if (funcionarioNovo.IsFailure)
         {
             return Result.Failure<int>(funcionarioNovo.Error);
         }
+
+        funcionarioNovo.Value.Contrato("Gerente");
+
+        funcionarioNovo.Value.CriarUsuario(request.Usuarios);
+
         await _funcionarioRepo.Adicionar(funcionarioNovo.Value);
 
         return funcionarioNovo.Value.Codigo;

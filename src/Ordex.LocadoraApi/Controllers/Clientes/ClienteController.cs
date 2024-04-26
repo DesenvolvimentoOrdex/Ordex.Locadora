@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Ordex.Locadora.Domain.Cadastros.Clientes.Commands;
+using Ordex.Locadora.Domain.Cadastros.Funcionarios;
 using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Shared.Interfaces;
 using Ordex.LocadoraApi.InputModels;
@@ -31,6 +33,17 @@ namespace Ordex.LocadoraApi.Controllers.Clientes
             return Ok(response.Value);
 
         }
+        [HttpGet("BuscarPorCpfCnpj")]
+        public async Task<IActionResult> BuscarPorCpfCnpj([FromQuery] CpfCnpjInputModel cpfCnpjInputModel)
+        {
+            var response = await _clienteService.ObterPorCpfCnpj(cpfCnpjInputModel.CpfCnpj);
+            if (response.IsFailure)
+            {
+                return NotFound(response.Error);
+            }
+            return Ok(response.Value);
+
+        }
         [HttpGet("Listar")]
         public async Task<IActionResult> Listar()
         {
@@ -38,6 +51,7 @@ namespace Ordex.LocadoraApi.Controllers.Clientes
             return Ok(response.Value);
         }
         [HttpPost("Criar")]
+        [AllowAnonymous]
         public async Task<IActionResult> NovoUsuario([FromBody] CriarClienteInputModel criarClienteInputModel, [FromServices] IServiceProvider sp, CancellationToken cancellationToken)
         {
             var userManager = sp.GetRequiredService<UserManager<Usuario>>();

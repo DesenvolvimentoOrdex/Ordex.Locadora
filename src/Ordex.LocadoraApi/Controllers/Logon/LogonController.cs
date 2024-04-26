@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
@@ -28,6 +29,7 @@ public class LogonController : BaseController
     }
 
     [HttpPost("Login")]
+    [AllowAnonymous]
     public async Task<Results<UnauthorizedHttpResult, Ok<AccessTokenResponse>, SignInHttpResult>> Login([FromBody] LoginInputModel login, [FromServices] IServiceProvider sp)
     {
         var userManager = sp.GetRequiredService<UserManager<Usuario>>();

@@ -10,6 +10,7 @@ namespace Ordex.Locadora.Shared.Interfaces
         Task Atualizar(Cliente entity);
         Task<List<Cliente>> ObterTodos();
         Task<Maybe<Cliente>> ObterPorId(int id);
+        Task<Maybe<Cliente>> ObterPorCpfCnpj(string cpfCnpj);
         Task<Maybe<Cliente>> ObterPorUsuarioId(string id);
     }
 }
