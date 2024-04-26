@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Ordex.Locadora.Domain.Cadastros.Clientes.Commands;
@@ -50,6 +51,7 @@ namespace Ordex.LocadoraApi.Controllers.Clientes
             return Ok(response.Value);
         }
         [HttpPost("Criar")]
+        [AllowAnonymous]
         public async Task<IActionResult> NovoUsuario([FromBody] CriarClienteInputModel criarClienteInputModel, [FromServices] IServiceProvider sp, CancellationToken cancellationToken)
         {
             var userManager = sp.GetRequiredService<UserManager<Usuario>>();

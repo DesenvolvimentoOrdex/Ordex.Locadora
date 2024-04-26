@@ -25,7 +25,25 @@ namespace Ordex.Locadora.Domain.Cadastros.Frotas
         public double Valor { get; private set; }
         public string Renavam { get; private set; }
         public string Chassi { get; private set; }
+        public bool Ativo { get; private set; }
         public ICollection<VeiculoImagem> Imagens { get; private set; }
+
+        public void AtivarInativar(bool status)
+        {
+            Ativo = status;
+        }
+
+        public void AlterarDados(string marca, string modelo, int ano, string cor, double valor, string renavam, string chassi)
+        {
+            Marca = marca;
+            Modelo = modelo;
+            Ano = ano;
+            Cor = cor;
+            Valor = valor;
+            Renavam = renavam;
+            Chassi = chassi;
+
+        }
 
         public static Veiculo Novo(string placa, string marca, string modelo, int ano, string cor, double valor, string renavam, string chassi)
         {

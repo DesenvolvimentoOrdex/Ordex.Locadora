@@ -1,33 +1,35 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CSharpFunctionalExtensions;
+using Microsoft.EntityFrameworkCore;
 using Ordex.Locadora.Domain.Cadastros.Frotas;
+using Ordex.Locadora.Domain.Cadastros.Funcionarios;
+using Ordex.Locadora.Infraesctuture.Data;
 using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.Locadora.Domain.Cadastros.Veiculos
 {
-    public class VeiculoRepository
+    public class VeiculoRepository: IVeiculoRepository
     {
-        private readonly DbContext _dbContext;
-        private readonly DbSet<Veiculo> _veiculo;
+        private readonly LocadoraDbContext _dbContext;
 
-        public VeiculoRepository(DbContext dbContext)
+        public VeiculoRepository(LocadoraDbContext dbContext)
         {
             _dbContext = dbContext;
-            _veiculo = dbContext.Set<Veiculo>();
         }
+
         public async Task Adicionar(Veiculo entity)
         {
-            await _veiculo.AddAsync(entity);
+            await _dbContext.Veiculos.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task Atualizar(Veiculo entity)
         {
-            _veiculo.Update(entity);
+            _dbContext.Veiculos.Update(entity);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Veiculo> ObterPorId(string placa) => await _veiculo.FirstAsync(c => c.Placa == placa);
+        public async Task<Maybe<Veiculo>> ObterPorPlaca(string placa) => await _dbContext.Veiculos.FirstOrDefaultAsync(c => c.Placa == placa);
 
-        public async Task<List<Veiculo>> ObterTodos() => await _veiculo.ToListAsync();
+        public async Task<List<Veiculo>> ObterTodos() => await _dbContext.Veiculos.ToListAsync();
     }
 }

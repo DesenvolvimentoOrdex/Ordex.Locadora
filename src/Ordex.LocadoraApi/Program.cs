@@ -84,8 +84,8 @@ var emailConfig = builder.Configuration
                 .GetSection("EmailConfiguration")
                 .Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
+
 builder.Services.AddScoped<IEmailSender, EmailSender>();
-builder.Services.AddTransient<IClienteRepository, ClienteRepository>();
 
 var app = builder.Build();
 

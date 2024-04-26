@@ -4,7 +4,7 @@ namespace Ordex.LocadoraApi.InputModels
 {
     public class CpfCnpjInputModel
     {
-        [Required(ErrorMessage = "O campo CpfCnpj é orbigatorio!")]
+        [Required(ErrorMessage = "O campo CpfCnpj é obrigatorio!")]
 
         public string CpfCnpj { get; set; }
     }
