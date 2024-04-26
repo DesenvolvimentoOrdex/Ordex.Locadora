@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Ordex.Locadora.Domain.Cadastros.Clientes.Commands;
+using Ordex.Locadora.Domain.Cadastros.Funcionarios;
 using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Shared.Interfaces;
 using Ordex.LocadoraApi.InputModels;
@@ -24,6 +25,17 @@ namespace Ordex.LocadoraApi.Controllers.Clientes
         public async Task<IActionResult> BuscarPorId([FromQuery]AtivarInativarInputModel ativarInativarInputModel)
         {           
             var response = await _clienteService.ObterPorId(ativarInativarInputModel.Codigo);
+            if (response.IsFailure)
+            {
+                return NotFound(response.Error);
+            }
+            return Ok(response.Value);
+
+        }
+        [HttpGet("BuscarPorCpfCnpj")]
+        public async Task<IActionResult> BuscarPorCpfCnpj([FromQuery] CpfCnpjInputModel cpfCnpjInputModel)
+        {
+            var response = await _clienteService.ObterPorCpfCnpj(cpfCnpjInputModel.CpfCnpj);
             if (response.IsFailure)
             {
                 return NotFound(response.Error);
