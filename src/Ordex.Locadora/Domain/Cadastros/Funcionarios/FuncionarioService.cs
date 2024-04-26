@@ -11,6 +11,27 @@ public class FuncionarioService : IFuncionarioService
     {
         _funcionarioRepo = funcionarioRepo;
     }
+
+    public async Task<Result<bool>> ExisteCpfCnpj(string cpfCnpj)
+    {
+        var funcionario = await _funcionarioRepo.ObterPorCpfCnpj(cpfCnpj);
+        if (funcionario.HasValue)
+        {
+            return Result.Failure<bool>("CpfCnpj em uso.");
+        }
+        return Result.Success<bool>(false);
+    }
+
+    public async Task<Result<Funcionario>> ObterPorCpfnpj(string cpfCnpj)
+    {
+        var funcionario = await _funcionarioRepo.ObterPorCpfCnpj(cpfCnpj);
+        if (funcionario.HasNoValue)
+        {
+            return Result.Failure<Funcionario>("Funcionario não encontrado.");
+        }
+        return funcionario.Value;
+    }
+
     public async Task<Result<Funcionario>> ObterPorId(int id)
     {
         var funcionario = await _funcionarioRepo.ObterPorId(id);

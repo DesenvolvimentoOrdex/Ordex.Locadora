@@ -27,6 +27,8 @@ namespace Ordex.Locadora.Domain.Cadastros.Funcionarios
 
         public async Task<Maybe<Funcionario>> ObterPorId(int id) => await _dbContext.Funcionarios.FirstOrDefaultAsync(c => c.Codigo == id);
 
+        public async Task<Maybe<Funcionario>> ObterPorCpfCnpj(string cpfCnpj) => await _dbContext.Funcionarios.FirstOrDefaultAsync(c => c.CpfCnpj == cpfCnpj);
+
         public async Task<Maybe<Funcionario>> ObterPorUsuarioId(string id) => await _dbContext.Funcionarios.FirstOrDefaultAsync(c => c.UsuarioId == id);
        
         public async Task<List<Funcionario>> ObterTodos() => await _dbContext.Funcionarios.ToListAsync();
