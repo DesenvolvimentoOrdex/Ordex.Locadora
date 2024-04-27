@@ -37,7 +37,7 @@ public class AluguelMap : IEntityTypeConfiguration<Aluguel>
         // Relacionamento com Veiculo
         builder.HasOne(a => a.Veiculo)
             .WithMany()
-            .HasForeignKey(a => a.CodigoVeiculo)
+            .HasForeignKey(a => a.PlacaVeiculo)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
     }

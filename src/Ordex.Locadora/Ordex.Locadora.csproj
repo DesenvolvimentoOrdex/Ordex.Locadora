@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Alugueis\Commands\" />
-    <Folder Include="Domain\Alugueis\Handdlers\" />
     <Folder Include="Infraesctuture\Data\Migrations\" />
     <Folder Include="Service\" />
   </ItemGroup>

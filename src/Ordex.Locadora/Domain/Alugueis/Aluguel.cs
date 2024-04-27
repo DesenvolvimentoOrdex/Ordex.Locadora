@@ -7,9 +7,18 @@ namespace Ordex.Locadora.Domain.Alugueis
 {
     public class Aluguel:Entity
     {
+        protected Aluguel(int codigoCliente, int codigoFuncionario, string placaVeiculo, double valor, bool totalComDesconto)
+        {
+            CodigoCliente = codigoCliente;
+            CodigoFuncionario = codigoFuncionario;
+            PlacaVeiculo = placaVeiculo;
+            Valor = valor;
+            TotalComDesconto = totalComDesconto;
+        }
+
         public int CodigoCliente { get; private set; }
         public int CodigoFuncionario { get; private set; }
-        public int CodigoVeiculo { get; private set; }
+        public string PlacaVeiculo { get;protected set; }
         public double Valor { get; private set; }
         public bool TotalComDesconto { get; private set; }
         public int PercentualDesconto { get; private set; }
@@ -19,15 +28,19 @@ namespace Ordex.Locadora.Domain.Alugueis
         public Funcionario Funcionario { get; set; }
         public Veiculo Veiculo { get; set; }
 
-        protected Aluguel(int codigoCliente, int codigoFuncionario, int codigoVeiculo, double valor, bool totalComDesconto, int percentualDesconto, bool status)
+        public void CriarDesconto( int percentualDesconto)
         {
-            CodigoCliente = codigoCliente;
-            CodigoFuncionario = codigoFuncionario;
-            CodigoVeiculo = codigoVeiculo;
-            Valor = valor;
-            TotalComDesconto = totalComDesconto;
-            PercentualDesconto = percentualDesconto;
+            PercentualDesconto = percentualDesconto;           
+        }
+
+        public void AtivarInativar(bool status)
+        {
             Status = status;
+        }
+
+       public static Aluguel Novo(int codigoCliente, int codigoFuncionario, string placa, double valor, bool totalComDesconto)
+        {
+            return new Aluguel(codigoCliente, codigoFuncionario, placa, valor, totalComDesconto);
         }
     }
 }

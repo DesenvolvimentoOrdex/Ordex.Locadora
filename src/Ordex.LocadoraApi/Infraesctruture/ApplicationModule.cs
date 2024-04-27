@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Ordex.Locadora.Domain.Alugueis;
 using Ordex.Locadora.Domain.Cadastros.Clientes;
 using Ordex.Locadora.Domain.Cadastros.Funcionarios;
 using Ordex.Locadora.Domain.Cadastros.Veiculos;
@@ -16,6 +17,8 @@ namespace Ordex.LocadoraApi.Infraesctruture
             builder.RegisterType<FuncionarioService>().As<IFuncionarioService>();
             builder.RegisterType<VeiculoRepository>().As<IVeiculoRepository>();
             builder.RegisterType<VeiculoService>().As<IVeiculoService>();
+            builder.RegisterType<AluguelRepository>().As<IAluguelRepository>();
+            builder.RegisterType<AluguelService>().As<IAluguelService>();
         }
     }
 }
