@@ -19,7 +19,7 @@ public class FuncionarioController : BaseController
         _funcionarioService = funcionarioService;
     }
     [HttpGet("BuscarPorId")]
-    public async Task<IActionResult> BuscarPorId([FromQuery] AtivarInativarInputModel ativarInativarInputModel)
+    public async Task<IActionResult> BuscarPorId([FromQuery] IdInputModel ativarInativarInputModel)
     {
         var response = await _funcionarioService.ObterPorId(ativarInativarInputModel.Codigo);
         if (response.IsFailure)
@@ -92,7 +92,7 @@ public class FuncionarioController : BaseController
 
     }
     [HttpPatch("Ativar")]
-    public async Task<IActionResult> AtivarCliente(AtivarInativarInputModel ativarInativarInputModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> AtivarCliente(IdInputModel ativarInativarInputModel, CancellationToken cancellationToken)
     {
         var comando = AtivarInativarFuncionarioCommand.Ativar(ativarInativarInputModel.Codigo);
         if (comando.IsFailure)
@@ -109,7 +109,7 @@ public class FuncionarioController : BaseController
 
     }
     [HttpPatch("Inativar")]
-    public async Task<IActionResult> InativarCliente(AtivarInativarInputModel ativarInativarInputModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> InativarCliente(IdInputModel ativarInativarInputModel, CancellationToken cancellationToken)
     {
         var comando = AtivarInativarFuncionarioCommand.Inativar(ativarInativarInputModel.Codigo);
         if (comando.IsFailure)

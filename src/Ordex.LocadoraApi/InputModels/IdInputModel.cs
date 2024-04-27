@@ -2,7 +2,7 @@
 
 namespace Ordex.LocadoraApi.InputModels
 {
-    public class AtivarInativarInputModel
+    public class IdInputModel
     {
         [Required]
         public int Codigo { get; set; }

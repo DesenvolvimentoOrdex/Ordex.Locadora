@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Ordex.Locadora.Domain.Cadastros.Clientes.Commands;
-using Ordex.Locadora.Domain.Cadastros.Funcionarios;
 using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Shared.Interfaces;
 using Ordex.LocadoraApi.InputModels;
@@ -23,8 +22,8 @@ namespace Ordex.LocadoraApi.Controllers.Clientes
         }
 
         [HttpGet("BuscarPorId")]
-        public async Task<IActionResult> BuscarPorId([FromQuery]AtivarInativarInputModel ativarInativarInputModel)
-        {           
+        public async Task<IActionResult> BuscarPorId([FromQuery] IdInputModel ativarInativarInputModel)
+        {
             var response = await _clienteService.ObterPorId(ativarInativarInputModel.Codigo);
             if (response.IsFailure)
             {
@@ -97,7 +96,7 @@ namespace Ordex.LocadoraApi.Controllers.Clientes
 
         }
         [HttpPatch("Ativar")]
-        public async Task<IActionResult> AtivarCliente(AtivarInativarInputModel ativarInativarInputModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> AtivarCliente(IdInputModel ativarInativarInputModel, CancellationToken cancellationToken)
         {
             var comando = AtivarInativarClienteCommand.Ativar(ativarInativarInputModel.Codigo);
             if (comando.IsFailure)
@@ -114,7 +113,7 @@ namespace Ordex.LocadoraApi.Controllers.Clientes
 
         }
         [HttpPatch("Inativar")]
-        public async Task<IActionResult> InativarCliente(AtivarInativarInputModel ativarInativarInputModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> InativarCliente(IdInputModel ativarInativarInputModel, CancellationToken cancellationToken)
         {
             var comando = AtivarInativarClienteCommand.Inativar(ativarInativarInputModel.Codigo);
             if (comando.IsFailure)

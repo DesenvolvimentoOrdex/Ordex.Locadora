@@ -1,32 +1,36 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CSharpFunctionalExtensions;
+using Microsoft.EntityFrameworkCore;
+using Ordex.Locadora.Infraesctuture.Data;
 using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.Locadora.Domain.Alugueis
 {
-    public class AluguelRepository
+    public class AluguelRepository : IAluguelRepository
     {
-        private readonly DbContext _dbContext;
-        private readonly DbSet<Aluguel> _aluguel;
+        private readonly LocadoraDbContext _dbContext;
 
-        public AluguelRepository(DbContext dbContext)
+        public AluguelRepository(LocadoraDbContext dbContext)
         {
             _dbContext = dbContext;
-            _aluguel = dbContext.Set<Aluguel>();
         }
         public async Task Adicionar(Aluguel entity)
         {
-            await _aluguel.AddAsync(entity);
+            await _dbContext.Alugueis.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task Atualizar(Aluguel entity)
         {
-            _aluguel.Update(entity);
+            _dbContext.Alugueis.Update(entity);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Aluguel> ObterPorId(int id) => await _aluguel.FirstAsync(c => c.Codigo == id);
 
-        public async Task<List<Aluguel>> ListarAlugueis() => await _aluguel.ToListAsync();
+
+        public async Task<List<Aluguel>> ListarAlugueis() => await _dbContext.Alugueis.ToListAsync();
+
+        public async Task<Maybe<Aluguel>> ObterPorId(int id) => await _dbContext.Alugueis.FirstOrDefaultAsync(c => c.Codigo == id);
+
+        public async Task<Maybe<Aluguel>> ObterPorVeiculo(string placa)=>await _dbContext.Alugueis.FirstOrDefaultAsync(v => v.PlacaVeiculo == placa);
     }
 }
