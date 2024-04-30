@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Ordex.LocadoraApi.InputModels
+namespace Ordex.LocadoraApi.InputModels.Id
 {
     public class IdInputModel
     {
-        [Required]
+        [Required(ErrorMessage = "O campo Id é obrigatório!")]
         public int Codigo { get; set; }
     }
 }

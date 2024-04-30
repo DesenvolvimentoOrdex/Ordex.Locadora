@@ -5,9 +5,10 @@ using Ordex.Locadora.Domain.Cadastros.Clientes.Commands;
 using Ordex.Locadora.Domain.Cadastros.Clientes;
 using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Shared.Interfaces;
-using Ordex.LocadoraApi.InputModels;
 using Ordex.Locadora.Domain.Cadastros.Veiculos.Commands;
 using Ordex.Locadora.Domain.Cadastros.Veiculos.Handllers;
+using Ordex.LocadoraApi.InputModels.Id;
+using Ordex.LocadoraApi.InputModels.Cadastro;
 
 namespace Ordex.LocadoraApi.Controllers.Frota
 {

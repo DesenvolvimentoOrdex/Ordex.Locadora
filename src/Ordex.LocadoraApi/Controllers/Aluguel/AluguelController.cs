@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Ordex.Locadora.Domain.Alugueis.Commands;
 using Ordex.Locadora.Shared.Interfaces;
-using Ordex.LocadoraApi.InputModels;
+using Ordex.LocadoraApi.InputModels.Cadastro;
+using Ordex.LocadoraApi.InputModels.Id;
 
 namespace Ordex.LocadoraApi.Controllers.Aluguel
 {

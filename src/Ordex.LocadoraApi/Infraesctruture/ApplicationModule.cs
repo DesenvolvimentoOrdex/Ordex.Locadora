@@ -3,6 +3,7 @@ using Ordex.Locadora.Domain.Alugueis;
 using Ordex.Locadora.Domain.Cadastros.Clientes;
 using Ordex.Locadora.Domain.Cadastros.Funcionarios;
 using Ordex.Locadora.Domain.Cadastros.Veiculos;
+using Ordex.Locadora.Infraesctuture.Data;
 using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.LocadoraApi.Infraesctruture
@@ -19,6 +20,7 @@ namespace Ordex.LocadoraApi.Infraesctruture
             builder.RegisterType<VeiculoService>().As<IVeiculoService>();
             builder.RegisterType<AluguelRepository>().As<IAluguelRepository>();
             builder.RegisterType<AluguelService>().As<IAluguelService>();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
         }
     }
 }

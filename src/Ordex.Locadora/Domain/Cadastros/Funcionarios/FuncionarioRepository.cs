@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
+using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Infraesctuture.Data;
 using Ordex.Locadora.Shared.Interfaces;
 
@@ -25,8 +26,13 @@ namespace Ordex.Locadora.Domain.Cadastros.Funcionarios
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Maybe<Funcionario>> ObterPorId(int id) => await _dbContext.Funcionarios.FirstOrDefaultAsync(c => c.Codigo == id);
-
+        public async Task<Maybe<Funcionario>> ObterPorId(int id)
+        {
+            return await _dbContext.Funcionarios
+                                   .Include(f => f.Usuario)
+                                   .Include(f => f.Endereco)
+                                   .FirstOrDefaultAsync(f => f.Codigo == id);
+        }
         public async Task<Maybe<Funcionario>> ObterPorCpfCnpj(string cpfCnpj) => await _dbContext.Funcionarios.FirstOrDefaultAsync(c => c.CpfCnpj == cpfCnpj);
 
         public async Task<Maybe<Funcionario>> ObterPorUsuarioId(string id) => await _dbContext.Funcionarios.FirstOrDefaultAsync(c => c.UsuarioId == id);

@@ -8,11 +8,11 @@ namespace Ordex.Locadora.Domain.Cadastros.Funcionarios.Handllers;
 public sealed class CriarFuncionarioCommandHandler : IRequestHandler<CriarFuncionarioCommand, Result<int>>
 {
     private readonly IFuncionarioRepository _funcionarioRepo;
-
     public CriarFuncionarioCommandHandler(IFuncionarioRepository funcionarioRepo)
     {
         _funcionarioRepo = funcionarioRepo;
     }
+
     public async Task<Result<int>> Handle(CriarFuncionarioCommand request, CancellationToken cancellationToken)
     {
         var funcionario = await _funcionarioRepo.ObterPorUsuarioId(request.Usuarios.Id);
@@ -33,6 +33,8 @@ public sealed class CriarFuncionarioCommandHandler : IRequestHandler<CriarFuncio
         {
             return Result.Failure<int>(funcionarioNovo.Error);
         }
+
+        funcionarioNovo.Value.IncluirEdereco(request.Endereco);
 
         funcionarioNovo.Value.Contrato("Gerente");
 

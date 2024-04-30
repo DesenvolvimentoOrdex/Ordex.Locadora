@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ordex.Locadora.Infraesctuture.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class create30 : Migration
+    public partial class creare5 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -52,6 +52,24 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Endereco",
+                columns: table => new
+                {
+                    Codigo = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Cep = table.Column<int>(type: "int", nullable: false),
+                    Logadouro = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Numero = table.Column<int>(type: "int", nullable: false),
+                    Bairro = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UF = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Endereco", x => x.Codigo);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Veiculos",
                 columns: table => new
                 {
@@ -62,7 +80,8 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                     Cor = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Valor = table.Column<double>(type: "float", nullable: false),
                     Renavam = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Chassi = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Chassi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,7 +224,6 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                     UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CpfCnpj = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TipoPessoa = table.Column<int>(type: "int", nullable: false),
-                    EnderecoCep = table.Column<int>(type: "int", nullable: false),
                     NomeRazao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataFiliacao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -228,12 +246,12 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                 {
                     Codigo = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Funcao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Funcao = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataContratacao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EnderecoCodigo = table.Column<int>(type: "int", nullable: false),
                     UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CpfCnpj = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TipoPessoa = table.Column<int>(type: "int", nullable: false),
-                    EnderecoCep = table.Column<int>(type: "int", nullable: false),
                     NomeRazao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataFiliacao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -247,6 +265,12 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         column: x => x.UsuarioId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Funcionarios_Endereco_EnderecoCodigo",
+                        column: x => x.EnderecoCodigo,
+                        principalTable: "Endereco",
+                        principalColumn: "Codigo",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -279,7 +303,7 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CodigoCliente = table.Column<int>(type: "int", nullable: false),
                     CodigoFuncionario = table.Column<int>(type: "int", nullable: false),
-                    CodigoVeiculo = table.Column<int>(type: "int", nullable: false),
+                    PlacaVeiculo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Valor = table.Column<double>(type: "float", nullable: false),
                     TotalComDesconto = table.Column<bool>(type: "bit", nullable: false),
                     PercentualDesconto = table.Column<int>(type: "int", nullable: false),
@@ -493,6 +517,11 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Funcionarios_EnderecoCodigo",
+                table: "Funcionarios",
+                column: "EnderecoCodigo");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Funcionarios_UsuarioId",
                 table: "Funcionarios",
                 column: "UsuarioId");
@@ -580,6 +609,9 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Endereco");
         }
     }
 }
