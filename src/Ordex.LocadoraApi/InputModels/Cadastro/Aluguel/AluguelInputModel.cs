@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Ordex.LocadoraApi.InputModels.Cadastro
+namespace Ordex.LocadoraApi.InputModels.Cadastro.Aluguel
 {
     public class AluguelInputModel
     {

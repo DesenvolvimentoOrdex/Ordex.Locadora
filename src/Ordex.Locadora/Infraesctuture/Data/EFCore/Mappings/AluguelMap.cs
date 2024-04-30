@@ -11,7 +11,7 @@ public class AluguelMap : IEntityTypeConfiguration<Aluguel>
         builder.Property(a => a.Valor)
             .IsRequired();
 
-        builder.Property(a => a.TotalComDesconto)
+        builder.Property(a => a.PossuiDesconto)
             .IsRequired();
 
         builder.Property(a => a.PercentualDesconto)

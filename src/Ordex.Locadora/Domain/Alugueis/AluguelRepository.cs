@@ -25,6 +25,11 @@ namespace Ordex.Locadora.Domain.Alugueis
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task Remover(Aluguel entity)
+        {
+            _dbContext.Alugueis.Remove(entity);
+            await _dbContext.SaveChangesAsync();
+        }
 
 
         public async Task<List<Aluguel>> ListarAlugueis() => await _dbContext.Alugueis.ToListAsync();

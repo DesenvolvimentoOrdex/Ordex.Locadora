@@ -7,6 +7,7 @@ namespace Ordex.Locadora.Shared.Interfaces
     {
         Task Adicionar(Aluguel entity);
         Task Atualizar(Aluguel entity);
+        Task Remover(Aluguel entity);
         Task<List<Aluguel>> ListarAlugueis();
         Task<Maybe<Aluguel>> ObterPorId(int id);
         Task<Maybe<Aluguel>> ObterPorVeiculo(string placa);
