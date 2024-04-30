@@ -12,8 +12,8 @@ using Ordex.Locadora.Infraesctuture.Data;
 namespace Ordex.Locadora.Infraesctuture.Data.Migrations
 {
     [DbContext(typeof(LocadoraDbContext))]
-    [Migration("20240426031556_statusVeiculo")]
-    partial class statusVeiculo
+    [Migration("20240430041157_creare5")]
+    partial class creare5
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,14 +42,15 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                     b.Property<int>("CodigoFuncionario")
                         .HasColumnType("int");
 
-                    b.Property<int>("CodigoVeiculo")
-                        .HasColumnType("int");
-
                     b.Property<int>("FuncionarioCodigo")
                         .HasColumnType("int");
 
                     b.Property<int>("PercentualDesconto")
                         .HasColumnType("int");
+
+                    b.Property<string>("PlacaVeiculo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
@@ -92,9 +93,6 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
 
                     b.Property<DateTime>("DataFiliacao")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("EnderecoCep")
-                        .HasColumnType("int");
 
                     b.Property<string>("NomeRazao")
                         .IsRequired()
@@ -206,7 +204,7 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                     b.Property<DateTime>("DataFiliacao")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EnderecoCep")
+                    b.Property<int>("EnderecoCodigo")
                         .HasColumnType("int");
 
                     b.Property<string>("Funcao")
@@ -228,6 +226,8 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Codigo");
+
+                    b.HasIndex("EnderecoCodigo");
 
                     b.HasIndex("UsuarioId");
 
@@ -613,6 +613,41 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
                     b.ToTable("VistoriaObservacoes");
                 });
 
+            modelBuilder.Entity("Ordex.Locadora.Shared.Roots.Enderecos.Endereco", b =>
+                {
+                    b.Property<int>("Codigo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Codigo"));
+
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Cep")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Cidade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logadouro")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UF")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Codigo");
+
+                    b.ToTable("Endereco");
+                });
+
             modelBuilder.Entity("Ordex.Locadora.Domain.Alugueis.Aluguel", b =>
                 {
                     b.HasOne("Ordex.Locadora.Domain.Cadastros.Clientes.Cliente", "Cliente")
@@ -664,11 +699,19 @@ namespace Ordex.Locadora.Infraesctuture.Data.Migrations
 
             modelBuilder.Entity("Ordex.Locadora.Domain.Cadastros.Funcionarios.Funcionario", b =>
                 {
+                    b.HasOne("Ordex.Locadora.Shared.Roots.Enderecos.Endereco", "Endereco")
+                        .WithMany()
+                        .HasForeignKey("EnderecoCodigo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Ordex.Locadora.Domain.Logon.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Endereco");
 
                     b.Navigation("Usuario");
                 });

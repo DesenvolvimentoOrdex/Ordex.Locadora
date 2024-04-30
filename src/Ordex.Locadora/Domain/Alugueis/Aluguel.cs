@@ -7,22 +7,23 @@ namespace Ordex.Locadora.Domain.Alugueis
 {
     public class Aluguel:Entity
     {
-        protected Aluguel(int codigoCliente, int codigoFuncionario, string placaVeiculo, double valor, bool totalComDesconto)
+        protected Aluguel(int codigoCliente, int codigoFuncionario, string placaVeiculo, double valor, bool possuiDesconto)
         {
             CodigoCliente = codigoCliente;
             CodigoFuncionario = codigoFuncionario;
             PlacaVeiculo = placaVeiculo;
             Valor = valor;
-            TotalComDesconto = totalComDesconto;
+            PossuiDesconto = possuiDesconto;
         }
 
         public int CodigoCliente { get; private set; }
         public int CodigoFuncionario { get; private set; }
         public string PlacaVeiculo { get;protected set; }
         public double Valor { get; private set; }
-        public bool TotalComDesconto { get; private set; }
+        public double ValorComDesconto { get; private set; }
+        public bool PossuiDesconto { get; private set; }
         public int PercentualDesconto { get; private set; }
-        public bool Status { get; private set; }
+        public EnumStatusAluguel Status { get; private set; }
 
         public Cliente Cliente { get; set; }
         public Funcionario Funcionario { get; set; }
@@ -30,14 +31,29 @@ namespace Ordex.Locadora.Domain.Alugueis
 
         public void CriarDesconto( int percentualDesconto)
         {
-            PercentualDesconto = percentualDesconto;           
+            PercentualDesconto = percentualDesconto;
+            ValorComDesconto = Valor - (Valor * percentualDesconto / 100);
         }
 
-        public void AtivarInativar(bool status)
+        public void AtivarInativar(EnumStatusAluguel status)
         {
             Status = status;
         }
 
+        public void InserirVeiculo(Veiculo veiculo)
+        {
+            Veiculo = veiculo;
+        }
+
+        public void InserirCliente(Cliente cliente)
+        {
+            Cliente = cliente;
+        }
+
+        public void InserirFuncionario(Funcionario funcionario)
+        {
+            Funcionario = funcionario;
+        }
        public static Aluguel Novo(int codigoCliente, int codigoFuncionario, string placa, double valor, bool totalComDesconto)
         {
             return new Aluguel(codigoCliente, codigoFuncionario, placa, valor, totalComDesconto);

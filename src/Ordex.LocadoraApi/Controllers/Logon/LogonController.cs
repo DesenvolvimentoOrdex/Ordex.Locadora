@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Service.EmailService;
-using Ordex.LocadoraApi.InputModels;
+using Ordex.LocadoraApi.InputModels.Login;
 
 namespace Ordex.LocadoraApi.Controllers.Logon;
 
@@ -74,6 +74,7 @@ public class LogonController : BaseController
             return NotFound("Usuário não encontrado!");
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+       
         var ListAEmailAdress = new List<MailboxAddress>();
 
         ListAEmailAdress.Add(new MailboxAddress(user.Email, user.Email));

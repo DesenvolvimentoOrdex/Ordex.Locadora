@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using Ordex.Locadora.Domain.Cadastros.Clientes;
 using Ordex.Locadora.Domain.Cadastros.Funcionarios;
 
 namespace Ordex.Locadora.Shared.Interfaces

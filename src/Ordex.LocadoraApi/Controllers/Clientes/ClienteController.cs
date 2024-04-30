@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Ordex.Locadora.Domain.Cadastros.Clientes.Commands;
+using Ordex.Locadora.Domain.Cadastros.Enderecos;
 using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Shared.Interfaces;
-using Ordex.LocadoraApi.InputModels;
+using Ordex.LocadoraApi.InputModels.Id;
+using Ordex.LocadoraApi.InputModels.Usuario;
 
 namespace Ordex.LocadoraApi.Controllers.Clientes
 {
@@ -51,20 +53,28 @@ namespace Ordex.LocadoraApi.Controllers.Clientes
         }
         [HttpPost("Criar")]
         [AllowAnonymous]
-        public async Task<IActionResult> NovoUsuario([FromBody] CriarClienteInputModel criarClienteInputModel, [FromServices] IServiceProvider sp, CancellationToken cancellationToken)
+        public async Task<IActionResult> NovoUsuario([FromBody] CriarUsuarioInputModel criarUsuarioInputModel, [FromServices] IServiceProvider sp, CancellationToken cancellationToken)
         {
             var userManager = sp.GetRequiredService<UserManager<Usuario>>();
 
             var user = new Usuario();
-            await userManager.SetUserNameAsync(user, criarClienteInputModel.Email);
-            var result = await userManager.CreateAsync(user, criarClienteInputModel.Senha);
+            await userManager.SetUserNameAsync(user, criarUsuarioInputModel.Email);
+            var result = await userManager.CreateAsync(user, criarUsuarioInputModel.Senha);
 
             if (!result.Succeeded)
             {
-                user = await userManager.FindByNameAsync(criarClienteInputModel.Email);
+                user = await userManager.FindByNameAsync(criarUsuarioInputModel.Email);
             }
 
-            var comando = CriarClienteCommand.Criar(criarClienteInputModel.CpfCnpj, criarClienteInputModel.NomeRazao, criarClienteInputModel.DataFiliacao, criarClienteInputModel.Telefone, user);
+            var enderecoCliete = Endereco.Novo(criarUsuarioInputModel.Enderecos.Cep, criarUsuarioInputModel.Enderecos.Logadouro,
+                                                criarUsuarioInputModel.Enderecos.Numero, criarUsuarioInputModel.Enderecos.Bairro,
+                                                criarUsuarioInputModel.Enderecos.Cep, criarUsuarioInputModel.Enderecos.UF);
+            
+            
+            
+            var comando = CriarClienteCommand.Criar(criarUsuarioInputModel.CpfCnpj, criarUsuarioInputModel.NomeRazao, 
+                                                    criarUsuarioInputModel.DataFiliacao, criarUsuarioInputModel.Telefone, 
+                                                    user, enderecoCliete);
             if (comando.IsFailure)
             {
                 return BadRequest(comando.Error);
@@ -79,9 +89,14 @@ namespace Ordex.LocadoraApi.Controllers.Clientes
 
         }
         [HttpPut("Alterar")]
-        public async Task<IActionResult> AlterarCliente(AlterarUsuarioInputModel AlterarClienteInputModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> AlterarCliente(AlterarUsuarioInputModel alterarUsuarioInputModel, CancellationToken cancellationToken)
         {
-            var comando = AlterarClienteCommand.Alterar(AlterarClienteInputModel.Codigo, AlterarClienteInputModel.CpfCnpj, AlterarClienteInputModel.NomeRazao, AlterarClienteInputModel.DataFiliacao, AlterarClienteInputModel.Telefone);
+            var enderecoCliete = Endereco.Novo(alterarUsuarioInputModel.Enderecos.Cep, alterarUsuarioInputModel.Enderecos.Logadouro,
+                                               alterarUsuarioInputModel.Enderecos.Numero, alterarUsuarioInputModel.Enderecos.Bairro,
+                                               alterarUsuarioInputModel.Enderecos.Cep, alterarUsuarioInputModel.Enderecos.UF);
+
+            var comando = AlterarClienteCommand.Alterar(alterarUsuarioInputModel.Codigo,alterarUsuarioInputModel.NomeRazao, alterarUsuarioInputModel.DataFiliacao, 
+                                                        alterarUsuarioInputModel.Telefone, enderecoCliete);
             if (comando.IsFailure)
             {
                 return BadRequest(comando.Error);

@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Ordex.Locadora.Domain.Alugueis.Commands;
 using Ordex.Locadora.Shared.Interfaces;
-using Ordex.LocadoraApi.InputModels;
+using Ordex.LocadoraApi.InputModels.Cadastro.Aluguel;
+using Ordex.LocadoraApi.InputModels.Id;
 
 namespace Ordex.LocadoraApi.Controllers.Aluguel
 {
@@ -42,6 +43,41 @@ namespace Ordex.LocadoraApi.Controllers.Aluguel
             var comando = CriarAluguelCommand.Criar(aluguelInputModel.CodigoCliente, aluguelInputModel.CodigoFuncionario,
                                                     aluguelInputModel.PlacaVeiculo, aluguelInputModel.Valor,
                                                     aluguelInputModel.PossuiDesconto, aluguelInputModel.PercentualDesconto);
+            if (comando.IsFailure)
+            {
+                return BadRequest(comando.Error);
+            }
+
+            var response = await _mediator.Send(comando.Value, cancellationToken);
+            if (response.IsFailure)
+            {
+                return BadRequest(response.Error);
+            }
+            return Ok(response.Value);
+
+        }
+
+        [HttpPost("IncluirDesconto")]
+        public async Task<IActionResult> IncluirDesconto([FromBody] AluguelDescontoInputModel aluguelDescontoInputModel, CancellationToken cancellationToken)
+        {
+            var comando = AplicarDescontoAluguelCommand.Criar( aluguelDescontoInputModel.PercentualDesconto, aluguelDescontoInputModel.CodigoAluguel);
+            if (comando.IsFailure)
+            {
+                return BadRequest(comando.Error);
+            }
+
+            var response = await _mediator.Send(comando.Value, cancellationToken);
+            if (response.IsFailure)
+            {
+                return BadRequest(response.Error);
+            }
+            return Ok(response.Value);
+
+        }
+        [HttpDelete("Remover")]
+        public async Task<IActionResult> Remover([FromBody] IdInputModel idInputModel, CancellationToken cancellationToken)
+        {
+            var comando = DeletarAluguelCommand.Remover(idInputModel.Codigo);
             if (comando.IsFailure)
             {
                 return BadRequest(comando.Error);

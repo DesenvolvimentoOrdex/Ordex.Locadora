@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ordex.Locadora.Domain.Alugueis;
 using Ordex.Locadora.Domain.Cadastros.Clientes;
+using Ordex.Locadora.Domain.Cadastros.Enderecos;
 using Ordex.Locadora.Domain.Cadastros.Frotas;
 using Ordex.Locadora.Domain.Cadastros.Funcionarios;
 using Ordex.Locadora.Domain.Logon;
@@ -17,6 +18,7 @@ public sealed class LocadoraDbContext(DbContextOptions<LocadoraDbContext> option
     public DbSet<Aluguel> Alugueis { get; set; }
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Funcionario> Funcionarios { get; set; }
+    public DbSet<Endereco> Enderecos { get; set; }
     public DbSet<Vistoria> Vistorias { get; set; }
     public DbSet<VistoriaImagem> VistoriaImagens { get; set; }
     public DbSet<VistoriaObservacao> VistoriaObservacoes { get; set; }

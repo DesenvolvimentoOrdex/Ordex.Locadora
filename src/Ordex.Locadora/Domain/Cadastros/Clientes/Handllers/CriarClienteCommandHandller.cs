@@ -1,10 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
-using CSharpFunctionalExtensions.ValueTasks;
 using MediatR;
 using Ordex.Locadora.Domain.Cadastros.Clientes.Commands;
 using Ordex.Locadora.Shared.Interfaces;
-using Ordex.Locadora.Shared.Roots.Pessoas;
-using Ordex.Locadora.Shared.Validations;
 
 namespace Ordex.Locadora.Domain.Cadastros.Clientes.Handllers
 {
@@ -12,7 +9,7 @@ namespace Ordex.Locadora.Domain.Cadastros.Clientes.Handllers
     {
 
         private readonly IClienteRepository _clienteRepo;
-
+ 
         public CriarClienteCommandHandller(IClienteRepository clienteRepo)
         {
             _clienteRepo = clienteRepo;
@@ -38,10 +35,12 @@ namespace Ordex.Locadora.Domain.Cadastros.Clientes.Handllers
             {
                 return Result.Failure<int>(clienteNovo.Error);
             }
-            await _clienteRepo.Adicionar(clienteNovo.Value);
-        
-            return clienteNovo.Value.Codigo;
 
+            clienteNovo.Value.IncluirEdereco(request.Endereco);
+
+            await _clienteRepo.Adicionar(clienteNovo.Value);
+
+            return clienteNovo.Value.Codigo;
 
         }
     }
