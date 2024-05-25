@@ -12,7 +12,7 @@ namespace Ordex.LocadoraApi.Controllers
             return Ok(new { success = true, data });
         }
 
-        protected IActionResult Created(object data)
+        protected IActionResult Created(Uri uri, object data)
         {
             return StatusCode(201, new { success = true, data });
         }

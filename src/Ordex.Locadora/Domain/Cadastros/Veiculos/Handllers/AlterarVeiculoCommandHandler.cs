@@ -7,7 +7,7 @@ using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.Locadora.Domain.Cadastros.Veiculos.Handllers
 {
-    public sealed class AlterarVeiculoCommandHandler : IRequestHandler<AlterarVeiculoCommand, Result<VeiculoViewModel>>
+    public sealed class AlterarVeiculoCommandHandler : IRequestHandler<AlterarVeiculoCommand, Result<bool>>
     {
         private readonly IVeiculoRepository _veiculoRepo;
         private readonly IMapper _mapper;
@@ -17,12 +17,12 @@ namespace Ordex.Locadora.Domain.Cadastros.Veiculos.Handllers
             _veiculoRepo = veiculoRepo;
             _mapper = mapper;
         }
-        public async Task<Result<VeiculoViewModel>> Handle(AlterarVeiculoCommand request, CancellationToken cancellationToken)
+        public async Task<Result<bool>> Handle(AlterarVeiculoCommand request, CancellationToken cancellationToken)
         {
             var veiculo = await _veiculoRepo.ObterPorPlaca(request.Placa);
             if (veiculo.HasNoValue)
             {
-                return Result.Failure<VeiculoViewModel>("Veículo não encontrado!");
+                return Result.Failure<bool>("Veículo não encontrado!");
             }
 
             veiculo.Value.AlterarDados(request.Marca, request.Modelo, request.Ano, request.Cor, request.Valor, request.Renavam, request.Chassi);
@@ -30,7 +30,7 @@ namespace Ordex.Locadora.Domain.Cadastros.Veiculos.Handllers
             await _veiculoRepo.Atualizar(veiculo.Value);
 
             var veiculoViewModel = _mapper.Map<VeiculoViewModel>(veiculo.Value);
-            return Result.Success<VeiculoViewModel>(veiculoViewModel);
+            return Result.Success<bool>(true);
         }
     }
 }

@@ -31,7 +31,6 @@ namespace Ordex.Locadora.Domain.Cadastros.Veiculos.Handllers
 
             await _veiculoRepo.Adicionar(veiculoNovo);
 
-
             var veiculoViewModel = _mapper.Map<VeiculoViewModel>(veiculo.Value);
             return Result.Success<VeiculoViewModel>(veiculoViewModel);
         }

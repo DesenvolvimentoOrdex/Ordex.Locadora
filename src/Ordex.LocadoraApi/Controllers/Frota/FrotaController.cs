@@ -1,19 +1,15 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Ordex.Locadora.Domain.Cadastros.Clientes.Commands;
-using Ordex.Locadora.Domain.Cadastros.Clientes;
-using Ordex.Locadora.Domain.Logon;
-using Ordex.Locadora.Shared.Interfaces;
 using Ordex.Locadora.Domain.Cadastros.Veiculos.Commands;
-using Ordex.Locadora.Domain.Cadastros.Veiculos.Handllers;
-using Ordex.LocadoraApi.InputModels.Id;
+using Ordex.Locadora.Shared.Interfaces;
 using Ordex.LocadoraApi.InputModels.Cadastro;
+using Ordex.LocadoraApi.InputModels.Id;
 
 namespace Ordex.LocadoraApi.Controllers.Frota
 {
     [Route("[controller]")]
-    public class FrotaController:BaseController
+    public class FrotaController : BaseController
     {
         private readonly IMediator _mediator;
         private readonly IVeiculoService _veiculoService;
@@ -43,8 +39,8 @@ namespace Ordex.LocadoraApi.Controllers.Frota
         [HttpPost("Criar")]
         public async Task<IActionResult> Novo([FromBody] VeiculoInputModel veiculoInputModel, CancellationToken cancellationToken)
         {
-            var comando = CriarVeiculoCommand.Criar(veiculoInputModel.Placa, veiculoInputModel.Marca, 
-                                                    veiculoInputModel.Modelo, veiculoInputModel.Ano, 
+            var comando = CriarVeiculoCommand.Criar(veiculoInputModel.Placa, veiculoInputModel.Marca,
+                                                    veiculoInputModel.Modelo, veiculoInputModel.Ano,
                                                     veiculoInputModel.Cor, veiculoInputModel.Valor,
                                                     veiculoInputModel.Renavam, veiculoInputModel.Chassi);
             if (comando.IsFailure)
@@ -55,9 +51,9 @@ namespace Ordex.LocadoraApi.Controllers.Frota
             var response = await _mediator.Send(comando.Value, cancellationToken);
             if (response.IsFailure)
             {
-                return BadRequest(response.Error);
+                return Conflict(response.Error);
             }
-            return Ok(response.Value);
+            return CreatedAtAction(nameof(BuscarPorPlaca), new { id = response.Value.Placa }, response.Value);
 
         }
         [HttpPut("Alterar")]
@@ -77,7 +73,7 @@ namespace Ordex.LocadoraApi.Controllers.Frota
             {
                 return NotFound(response.Error);
             }
-            return Ok(response.Value);
+            return NoContent();
 
         }
         [HttpPatch("Ativar")]
