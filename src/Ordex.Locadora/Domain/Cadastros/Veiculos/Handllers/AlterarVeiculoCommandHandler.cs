@@ -6,7 +6,7 @@ using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.Locadora.Domain.Cadastros.Veiculos.Handllers
 {
-    public sealed class AlterarVeiculoCommandHandler : IRequestHandler<CriarVeiculoCommand, Result<Veiculo>>
+    public sealed class AlterarVeiculoCommandHandler : IRequestHandler<AlterarVeiculoCommand, Result<Veiculo>>
     {
         private readonly IVeiculoRepository _veiculoRepo;
 
@@ -14,7 +14,7 @@ namespace Ordex.Locadora.Domain.Cadastros.Veiculos.Handllers
         {
             _veiculoRepo = veiculoRepo;
         }
-        public async Task<Result<Veiculo>> Handle(CriarVeiculoCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Veiculo>> Handle(AlterarVeiculoCommand request, CancellationToken cancellationToken)
         {
             var veiculo = await _veiculoRepo.ObterPorPlaca(request.Placa);
             if (veiculo.HasNoValue)
@@ -24,7 +24,7 @@ namespace Ordex.Locadora.Domain.Cadastros.Veiculos.Handllers
 
             veiculo.Value.AlterarDados(request.Marca, request.Modelo, request.Ano, request.Cor, request.Valor, request.Renavam, request.Chassi);
         
-            await _veiculoRepo.Adicionar(veiculo.Value);
+            await _veiculoRepo.Atualizar(veiculo.Value);
 
             return Result.Success<Veiculo>(veiculo.Value);
         }
