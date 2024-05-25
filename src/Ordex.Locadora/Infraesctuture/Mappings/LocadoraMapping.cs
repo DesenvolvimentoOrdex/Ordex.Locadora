@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Ordex.Locadora.Domain.Cadastros.Clientes;
 using Ordex.Locadora.Domain.Cadastros.Enderecos;
 using Ordex.Locadora.Domain.Cadastros.Frotas;
 using Ordex.Locadora.Domain.Cadastros.Funcionarios;
@@ -13,8 +14,14 @@ public class LocadoraMapping : Profile
     {
         CreateMap<Veiculo, VeiculoViewModel>();
         CreateMap<Funcionario, FuncionarioViewModel>()
-        .ForMember(a=> a.Email, opt => opt.MapFrom(src => src.Usuario.UserName))
-        .ForMember(a => a.endereco, opt => opt.MapFrom(src => src.Endereco));
+        .ForMember(a => a.Email, opt => opt.MapFrom(src => src.Usuario.UserName))
+        .ForMember(a => a.endereco, opt => opt.MapFrom(src => src.Endereco))
+        .ForMember(a => a.DataNascimento, opt => opt.MapFrom(src => src.DataFiliacao));
+        CreateMap<Cliente, ClienteViewModel>()
+        .ForMember(a => a.Email, opt => opt.MapFrom(src => src.Usuario.UserName))
+        .ForMember(a => a.endereco, opt => opt.MapFrom(src => src.Endereco))
+        .ForMember(a => a.DataNascimento, opt => opt.MapFrom(src => src.DataFiliacao));
+
         CreateMap<Endereco, EnderecoViewModel>();
     }
 }

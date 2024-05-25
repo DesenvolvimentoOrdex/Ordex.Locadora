@@ -28,16 +28,29 @@ namespace Ordex.Locadora.Domain.Cadastros.Clientes
         public async Task<Maybe<Cliente>> ObterPorUsuarioId(string id)
         {
            return await _context.Clientes
-                 .Include(f => f.Usuario)
-                 .Include(f => f.Endereco)
-                .FirstOrDefaultAsync(c => c.UsuarioId == id);
+                                .Include(f => f.Usuario)
+                                .Include(f => f.Endereco)
+                                .FirstOrDefaultAsync(c => c.UsuarioId == id);
         }
 
-        public async Task<Maybe<Cliente>> ObterPorCpfCnpj(string cpfCnpj) => await _context.Clientes.FirstOrDefaultAsync(c => c.CpfCnpj == cpfCnpj);
+        public async Task<Maybe<Cliente>> ObterPorCpfCnpj(string cpfCnpj)
+        {
+           return await _context.Clientes
+                                .Include(f => f.Usuario)
+                                .Include(f => f.Endereco)
+                                .FirstOrDefaultAsync(c => c.CpfCnpj == cpfCnpj);
+
+        }
 
         public async Task<Maybe<Cliente>> ObterPorId(int id) => await _context.Clientes.FirstOrDefaultAsync(c => c.Codigo == id);
 
-        public async Task<List<Cliente>> ObterTodos() => await _context.Clientes.ToListAsync();
+        public async Task<List<Cliente>> ObterTodos()
+        {
+           return await _context.Clientes
+                                .Include(f => f.Usuario)
+                                .Include(f => f.Endereco)
+                                .ToListAsync();
+        }
 
     }
 }

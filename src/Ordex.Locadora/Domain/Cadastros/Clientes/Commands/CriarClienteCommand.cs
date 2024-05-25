@@ -3,10 +3,11 @@ using Microsoft.IdentityModel.Tokens;
 using Ordex.Locadora.Domain.Cadastros.Enderecos;
 using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Shared;
+using Ordex.Locadora.Shared.DTOs;
 
 namespace Ordex.Locadora.Domain.Cadastros.Clientes.Commands
 {
-    public sealed class CriarClienteCommand : IDomainCommand<Result<int>>
+    public sealed class CriarClienteCommand : IDomainCommand<Result<ClienteViewModel>>
     {
         private  CriarClienteCommand(string cpfCnpj, string nomeRazao, DateTime dataFiliacao, string telefone, Usuario usuario, Endereco endereco)
         {
