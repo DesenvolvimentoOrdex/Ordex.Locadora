@@ -2,10 +2,11 @@
 using Microsoft.IdentityModel.Tokens;
 using Ordex.Locadora.Domain.Cadastros.Frotas;
 using Ordex.Locadora.Shared;
+using Ordex.Locadora.Shared.DTOs;
 
 namespace Ordex.Locadora.Domain.Cadastros.Veiculos.Commands
 {
-    public sealed class CriarVeiculoCommand : IDomainCommand<Result<Veiculo>>
+    public sealed class CriarVeiculoCommand : IDomainCommand<Result<VeiculoViewModel>>
     {
         public CriarVeiculoCommand(string placa, string marca, string modelo, int ano, string cor, double valor, string renavam, string chassi)
         {

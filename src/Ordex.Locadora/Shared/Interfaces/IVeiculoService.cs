@@ -1,11 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
-using Ordex.Locadora.Domain.Cadastros.Frotas;
+using Ordex.Locadora.Shared.DTOs;
 
 namespace Ordex.Locadora.Shared.Interfaces
 {
     public interface IVeiculoService
     {
-        Task<Result<Veiculo>> ObterPorPlaca(string placa);
-        Task<Result<List<Veiculo>>> ObterTodos();
+        Task<Result<VeiculoViewModel>> ObterPorPlaca(string placa);
+        Task<Result<List<VeiculoViewModel>>> ObterTodos();
     }
 }

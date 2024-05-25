@@ -4,11 +4,11 @@ using EmailService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Ordex.Locadora.Domain.Cadastros.Clientes;
+using Ordex.Locadora.Domain.Cadastros.Frotas;
 using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Infraesctuture.Data;
 using Ordex.Locadora.Service.EmailService;
-using Ordex.Locadora.Shared.Interfaces;
+using Ordex.Locadora.Shared.DTOs;
 using Ordex.LocadoraApi.Infraesctruture;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -50,6 +50,8 @@ builder.Services.AddCors(option =>
     .AllowAnyMethod());
 });
 
+builder.Services.AddAutoMapper(typeof(Veiculo), typeof(VeiculoViewModel));
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Documentation", Version = "v1" });
@@ -85,6 +87,7 @@ var emailConfig = builder.Configuration
                 .Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
