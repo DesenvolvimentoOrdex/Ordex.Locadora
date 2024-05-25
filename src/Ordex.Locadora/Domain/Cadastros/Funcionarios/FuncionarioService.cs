@@ -1,4 +1,6 @@
-﻿using CSharpFunctionalExtensions;
+﻿using AutoMapper;
+using CSharpFunctionalExtensions;
+using Ordex.Locadora.Shared.DTOs;
 using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.Locadora.Domain.Cadastros.Funcionarios;
@@ -6,10 +8,12 @@ namespace Ordex.Locadora.Domain.Cadastros.Funcionarios;
 public class FuncionarioService : IFuncionarioService
 {
     private readonly IFuncionarioRepository _funcionarioRepo;
+    private readonly IMapper _mapper;
 
-    public FuncionarioService(IFuncionarioRepository funcionarioRepo)
+    public FuncionarioService(IFuncionarioRepository funcionarioRepo, IMapper mapper)
     {
         _funcionarioRepo = funcionarioRepo;
+        _mapper = mapper;
     }
 
     public async Task<Result<bool>> ExisteCpfCnpj(string cpfCnpj)
@@ -22,28 +26,33 @@ public class FuncionarioService : IFuncionarioService
         return Result.Success<bool>(false);
     }
 
-    public async Task<Result<Funcionario>> ObterPorCpfnpj(string cpfCnpj)
+    public async Task<Result<FuncionarioViewModel>> ObterPorCpfnpj(string cpfCnpj)
     {
         var funcionario = await _funcionarioRepo.ObterPorCpfCnpj(cpfCnpj);
         if (funcionario.HasNoValue)
         {
-            return Result.Failure<Funcionario>("Funcionario não encontrado.");
+            return Result.Failure<FuncionarioViewModel>("Funcionario não encontrado.");
         }
-        return funcionario.Value;
+        var funcionarioViewModel = _mapper.Map<FuncionarioViewModel>(funcionario.Value);
+        return funcionarioViewModel;
     }
 
-    public async Task<Result<Funcionario>> ObterPorId(int id)
+    public async Task<Result<FuncionarioViewModel>> ObterPorId(int id)
     {
         var funcionario = await _funcionarioRepo.ObterPorId(id);
         if (funcionario.HasNoValue)
         {
-            return Result.Failure<Funcionario>("Funcionario não encontrado.");
+            return Result.Failure<FuncionarioViewModel>("Funcionario não encontrado.");
         }
-        return funcionario.Value;
+        var funcionarioViewModel = _mapper.Map<FuncionarioViewModel>(funcionario.Value);
+        return funcionarioViewModel;
     }
 
-    public async Task<Result<List<Funcionario>>> ObterTodos()
+    public async Task<Result<List<FuncionarioViewModel>>> ObterTodos()
     {
-        return await _funcionarioRepo.ObterTodos();
+        var funcionarios =  await _funcionarioRepo.ObterTodos();
+        var funcionariosListViewModel = _mapper.Map<List<FuncionarioViewModel>>(funcionarios);
+        return funcionariosListViewModel;
+
     }
 }

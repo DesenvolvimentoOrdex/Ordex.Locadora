@@ -1,37 +1,40 @@
-﻿using CSharpFunctionalExtensions;
+﻿using AutoMapper;
+using CSharpFunctionalExtensions;
 using MediatR;
 using Ordex.Locadora.Domain.Cadastros.Funcionarios.Commands;
+using Ordex.Locadora.Shared.DTOs;
 using Ordex.Locadora.Shared.Interfaces;
 
 namespace Ordex.Locadora.Domain.Cadastros.Funcionarios.Handllers;
 
-public sealed class CriarFuncionarioCommandHandler : IRequestHandler<CriarFuncionarioCommand, Result<int>>
+public sealed class CriarFuncionarioCommandHandler : IRequestHandler<CriarFuncionarioCommand, Result<FuncionarioViewModel>>
 {
     private readonly IFuncionarioRepository _funcionarioRepo;
-    public CriarFuncionarioCommandHandler(IFuncionarioRepository funcionarioRepo)
+    private readonly IMapper _mapper;
+    public CriarFuncionarioCommandHandler(IFuncionarioRepository funcionarioRepo, IMapper mapper)
     {
         _funcionarioRepo = funcionarioRepo;
+        _mapper = mapper;
     }
 
-    public async Task<Result<int>> Handle(CriarFuncionarioCommand request, CancellationToken cancellationToken)
+    public async Task<Result<FuncionarioViewModel>> Handle(CriarFuncionarioCommand request, CancellationToken cancellationToken)
     {
         var funcionario = await _funcionarioRepo.ObterPorUsuarioId(request.Usuarios.Id);
         if (funcionario.HasValue)
         {
-            return Result.Failure<int>(funcionario.Value.Codigo.ToString());
+            return Result.Failure<FuncionarioViewModel>(funcionario.Value.Codigo.ToString());
         }
 
         var existeCpfCnpj = await _funcionarioRepo.ObterPorCpfCnpj(request.CpfCnpj);
         if (existeCpfCnpj.HasValue)
         {
-            return Result.Failure<int>($" Cpf ou Cnpj cadastrado para o funcionario com o codigo: {existeCpfCnpj.Value.Codigo}, verifique!"
-            );
+            return Result.Failure<FuncionarioViewModel>($" Cpf ou Cnpj cadastrado para o funcionario com o codigo: {existeCpfCnpj.Value.Codigo}, verifique!");
         }
 
         var funcionarioNovo = Funcionario.Novo(request. CpfCnpj, request.NomeRazao, request.DataFiliacao, request.Telefone, true, request.Usuarios.Id);
         if (funcionarioNovo.IsFailure)
         {
-            return Result.Failure<int>(funcionarioNovo.Error);
+            return Result.Failure<FuncionarioViewModel>(funcionarioNovo.Error);
         }
 
         funcionarioNovo.Value.IncluirEdereco(request.Endereco);
@@ -42,6 +45,14 @@ public sealed class CriarFuncionarioCommandHandler : IRequestHandler<CriarFuncio
 
         await _funcionarioRepo.Adicionar(funcionarioNovo.Value);
 
-        return funcionarioNovo.Value.Codigo;
+        var funcionarioCriado = await _funcionarioRepo.ObterPorId(funcionarioNovo.Value.Codigo);
+        if (funcionarioCriado.HasNoValue)
+        {
+            return Result.Failure<FuncionarioViewModel>($" Falha ao cadastrar o funcionario!");
+        }
+
+        var funcionarioViewModel = _mapper.Map<FuncionarioViewModel>(funcionarioCriado.Value);
+
+        return funcionarioViewModel;
     }
 }

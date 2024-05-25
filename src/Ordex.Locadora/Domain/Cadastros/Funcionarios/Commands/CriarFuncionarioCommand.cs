@@ -4,10 +4,11 @@ using Ordex.Locadora.Domain.Cadastros.Clientes.Commands;
 using Ordex.Locadora.Domain.Cadastros.Enderecos;
 using Ordex.Locadora.Domain.Logon;
 using Ordex.Locadora.Shared;
+using Ordex.Locadora.Shared.DTOs;
 
 namespace Ordex.Locadora.Domain.Cadastros.Funcionarios.Commands;
 
-public sealed class CriarFuncionarioCommand : IDomainCommand<Result<int>>
+public sealed class CriarFuncionarioCommand : IDomainCommand<Result<FuncionarioViewModel>>
 {
     private CriarFuncionarioCommand(string cpfCnpj, string nomeRazao, DateTime dataFiliacao, string telefone, Usuario usuario, Endereco endereco)
     {
