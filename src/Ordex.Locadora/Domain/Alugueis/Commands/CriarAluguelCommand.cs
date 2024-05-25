@@ -2,10 +2,11 @@
 using Microsoft.IdentityModel.Tokens;
 using Ordex.Locadora.Domain.Cadastros.Clientes.Commands;
 using Ordex.Locadora.Shared;
+using Ordex.Locadora.Shared.DTOs;
 
 namespace Ordex.Locadora.Domain.Alugueis.Commands
 {
-    public sealed class CriarAluguelCommand : IDomainCommand<Result<Aluguel>>
+    public sealed class CriarAluguelCommand : IDomainCommand<Result<AluguelViewModel>>
     {
         private CriarAluguelCommand(int codigoCliente, int codigoFuncionario, string placaVeiculo, double valor, bool possuiDesconto, int percentualDesconto)
         {

@@ -29,6 +29,17 @@ namespace Ordex.LocadoraApi.Controllers.Aluguel
             return Ok(response.Value);
 
         }
+        [HttpGet("BuscarPorVeiculo")]
+        public async Task<IActionResult> BuscarPorVeiculo([FromQuery] string placa)
+        {
+            var response = await _aluguelService.ObterPorVeiculo(placa);
+            if (response.IsFailure)
+            {
+                return NotFound(response.Error);
+            }
+            return Ok(response.Value);
+
+        }
 
         [HttpGet("Listar")]
         public async Task<IActionResult> Listar()

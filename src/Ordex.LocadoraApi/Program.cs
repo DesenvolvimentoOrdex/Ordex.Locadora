@@ -4,6 +4,7 @@ using EmailService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Ordex.Locadora.Domain.Alugueis;
 using Ordex.Locadora.Domain.Cadastros.Clientes;
 using Ordex.Locadora.Domain.Cadastros.Enderecos;
 using Ordex.Locadora.Domain.Cadastros.Frotas;
@@ -57,6 +58,7 @@ builder.Services.AddAutoMapper(typeof(Veiculo), typeof(VeiculoViewModel));
 builder.Services.AddAutoMapper(typeof(Funcionario), typeof(FuncionarioViewModel));
 builder.Services.AddAutoMapper(typeof(Endereco), typeof(EnderecoViewModel));
 builder.Services.AddAutoMapper(typeof(Cliente), typeof(ClienteViewModel));
+builder.Services.AddAutoMapper(typeof(Aluguel), typeof(AluguelViewModel));
 
 builder.Services.AddSwaggerGen(c =>
 {

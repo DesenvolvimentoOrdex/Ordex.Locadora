@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
+using Ordex.Locadora.Domain.Cadastros.Funcionarios;
 using Ordex.Locadora.Infraesctuture.Data;
 using Ordex.Locadora.Shared.Interfaces;
 
@@ -32,10 +33,50 @@ namespace Ordex.Locadora.Domain.Alugueis
         }
 
 
-        public async Task<List<Aluguel>> ListarAlugueis() => await _dbContext.Alugueis.ToListAsync();
+        public async Task<List<Aluguel>> ListarAlugueis()
+        {
+            return await _dbContext.Alugueis
+                                   .Include(f => f.Funcionario)
+                                   .ThenInclude(f => f.Usuario)
+                                   .Include(f => f.Funcionario)
+                                   .ThenInclude(e => e.Endereco)                            
+                                   .Include(f => f.Cliente)
+                                   .ThenInclude(e => e.Usuario)
+                                   .Include(f => f.Cliente)
+                                   .ThenInclude(e => e.Endereco)
+                                   .Include(f => f.Veiculo)
+                                   .ToListAsync();
 
-        public async Task<Maybe<Aluguel>> ObterPorId(int id) => await _dbContext.Alugueis.FirstOrDefaultAsync(c => c.Codigo == id);
+        }
 
-        public async Task<Maybe<Aluguel>> ObterPorVeiculo(string placa)=>await _dbContext.Alugueis.FirstOrDefaultAsync(v => v.PlacaVeiculo == placa);
+        public async Task<Maybe<Aluguel>> ObterPorId(int id)
+        {
+            return await _dbContext.Alugueis
+                                   .Include(f => f.Funcionario)
+                                   .ThenInclude(f => f.Usuario)
+                                   .Include(f => f.Funcionario)
+                                   .ThenInclude(e => e.Endereco)
+                                   .Include(f => f.Cliente)
+                                   .ThenInclude(e => e.Usuario)
+                                   .Include(f => f.Cliente)
+                                   .ThenInclude(e => e.Endereco)
+                                   .Include(f => f.Veiculo)
+                                    .FirstOrDefaultAsync(c => c.Codigo == id);
+        }
+
+        public async Task<Maybe<Aluguel>> ObterPorVeiculo(string placa)
+        {
+           return await _dbContext.Alugueis
+                                  .Include(f => f.Funcionario)
+                                   .ThenInclude(f => f.Usuario)
+                                   .Include(f => f.Funcionario)
+                                   .ThenInclude(e => e.Endereco)
+                                   .Include(f => f.Cliente)
+                                   .ThenInclude(e => e.Usuario)
+                                   .Include(f => f.Cliente)
+                                   .ThenInclude(e => e.Endereco)
+                                   .Include(f => f.Veiculo)
+                                  .FirstOrDefaultAsync(v => v.PlacaVeiculo == placa);
+        }
     }
 }

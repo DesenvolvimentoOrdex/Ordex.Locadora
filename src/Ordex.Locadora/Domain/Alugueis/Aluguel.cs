@@ -31,8 +31,15 @@ namespace Ordex.Locadora.Domain.Alugueis
 
         public void CriarDesconto( int percentualDesconto)
         {
-            PercentualDesconto = percentualDesconto;
-            ValorComDesconto = Valor - (Valor * percentualDesconto / 100);
+            if (percentualDesconto != 0)
+            {
+                ValorComDesconto = Valor - (Valor * percentualDesconto / 100);
+            }
+            else
+            {
+                ValorComDesconto = Valor;
+            }
+            PercentualDesconto = percentualDesconto;          
         }
 
         public void AtivarInativar(EnumStatusAluguel status)

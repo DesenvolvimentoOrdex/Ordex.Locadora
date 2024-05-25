@@ -3,6 +3,9 @@
     public enum EnumStatusAluguel
     {
         Aberto,
-        fechado
+        fechado,
+        Rascunho,
+        Finalizado
+
     }
 }

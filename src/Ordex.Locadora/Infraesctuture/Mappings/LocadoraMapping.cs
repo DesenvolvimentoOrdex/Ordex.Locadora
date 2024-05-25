@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Ordex.Locadora.Domain.Alugueis;
 using Ordex.Locadora.Domain.Cadastros.Clientes;
 using Ordex.Locadora.Domain.Cadastros.Enderecos;
 using Ordex.Locadora.Domain.Cadastros.Frotas;
@@ -23,5 +24,6 @@ public class LocadoraMapping : Profile
         .ForMember(a => a.DataNascimento, opt => opt.MapFrom(src => src.DataFiliacao));
 
         CreateMap<Endereco, EnderecoViewModel>();
+        CreateMap<Aluguel, AluguelViewModel>();
     }
 }
