@@ -91,9 +91,9 @@ namespace Ordex.LocadoraApi.Controllers.Clientes
         [HttpPut("Alterar")]
         public async Task<IActionResult> AlterarCliente(AlterarUsuarioInputModel alterarUsuarioInputModel, CancellationToken cancellationToken)
         {
-            var enderecoCliete = Endereco.Novo(alterarUsuarioInputModel.Enderecos.Cep, alterarUsuarioInputModel.Enderecos.Logadouro,
-                                               alterarUsuarioInputModel.Enderecos.Numero, alterarUsuarioInputModel.Enderecos.Bairro,
-                                               alterarUsuarioInputModel.Enderecos.Cep, alterarUsuarioInputModel.Enderecos.UF);
+            var enderecoCliete = Endereco.Novo(alterarUsuarioInputModel.Endereco.Cep, alterarUsuarioInputModel.Endereco.Logadouro,
+                                               alterarUsuarioInputModel.Endereco.Numero, alterarUsuarioInputModel.Endereco.Bairro,
+                                               alterarUsuarioInputModel.Endereco.Cep, alterarUsuarioInputModel.Endereco.UF);
 
             var comando = AlterarClienteCommand.Alterar(alterarUsuarioInputModel.Codigo,alterarUsuarioInputModel.NomeRazao, alterarUsuarioInputModel.DataFiliacao, 
                                                         alterarUsuarioInputModel.Telefone, enderecoCliete);

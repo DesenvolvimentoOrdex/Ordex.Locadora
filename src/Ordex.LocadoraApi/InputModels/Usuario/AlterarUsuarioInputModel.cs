@@ -14,6 +14,6 @@ namespace Ordex.LocadoraApi.InputModels.Usuario
         [Required(ErrorMessage = "O campo Telefone é obrigatório!")]
         [Phone]
         public string Telefone { get; set; }
-        public EnderecoInputModel Enderecos { get; set; }
+        public EnderecoInputModel Endereco { get; set; }
     }
 }
